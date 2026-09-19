@@ -1,0 +1,2036 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Twenty Days Out Loud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --bg:#F1F4F0; --surface:#FFFFFF; --surface-2:#E9EEE9;
+    --ink:#161E1A; --ink-2:#3B4A43; --muted:#61706A;
+    --line:#D9E1DA; --line-2:#C3CFC7;
+    --jade:#0E6E5E; --jade-ink:#0A4A3F; --jade-soft:#D8EAE4;
+    --gold:#B4780C; --gold-soft:#F7E8C9;
+    --good:#2C7A4B; --warn:#A3690B; --bad:#A63A2E;
+    --shadow:0 1px 2px rgba(20,40,34,.06), 0 8px 24px -14px rgba(20,40,34,.28);
+    --r:10px;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#0D1412; --surface:#151E1B; --surface-2:#1C2724;
+      --ink:#E7EDE9; --ink-2:#BCC8C2; --muted:#8B9A94;
+      --line:#243230; --line-2:#31423E;
+      --jade:#54C2A7; --jade-ink:#8FD9C5; --jade-soft:#14312A;
+      --gold:#E0A64A; --gold-soft:#2E2512;
+      --good:#5CBE84; --warn:#D9A548; --bad:#E08272;
+      --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 28px -16px rgba(0,0,0,.7);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0D1412; --surface:#151E1B; --surface-2:#1C2724;
+    --ink:#E7EDE9; --ink-2:#BCC8C2; --muted:#8B9A94;
+    --line:#243230; --line-2:#31423E;
+    --jade:#54C2A7; --jade-ink:#8FD9C5; --jade-soft:#14312A;
+    --gold:#E0A64A; --gold-soft:#2E2512;
+    --good:#5CBE84; --warn:#D9A548; --bad:#E08272;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 28px -16px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
+    font-size:15px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:780px; margin:0 auto; padding-inline:18px; padding-block:0 96px}
+
+  .mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+  .eyebrow{
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; font-weight:500;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
+  }
+  h1,h2,h3{text-wrap:balance; margin:0}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+    background:color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-in{max-width:780px; margin:0 auto; padding:10px 18px}
+  .brandrow{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+  .brand{font-size:17px; font-weight:700; letter-spacing:-.015em}
+  .brand em{font-style:normal; color:var(--jade)}
+  .brandmeta{margin-left:auto; display:flex; align-items:center; gap:10px}
+
+  .rail{display:flex; gap:6px; overflow-x:auto; padding:10px 0 2px; scrollbar-width:thin}
+  .rail::-webkit-scrollbar{height:5px}
+  .rail::-webkit-scrollbar-thumb{background:var(--line-2); border-radius:4px}
+  .chip{
+    flex:0 0 auto; width:38px; height:34px; border-radius:8px;
+    border:1px solid var(--line); background:var(--surface); color:var(--muted);
+    font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:500;
+    cursor:pointer; display:grid; place-items:center; position:relative;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .chip:hover{border-color:var(--line-2); color:var(--ink-2)}
+  .chip[aria-current="true"]{background:var(--jade); border-color:var(--jade); color:#fff}
+  :root[data-theme="dark"] .chip[aria-current="true"],
+  :root:not([data-theme="light"]) .chip[aria-current="true"]{color:#08201B}
+  @media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .chip[aria-current="true"]{color:#fff}}
+  .chip.done::after{
+    content:""; position:absolute; bottom:4px; left:50%; transform:translateX(-50%);
+    width:4px; height:4px; border-radius:50%; background:var(--good);
+  }
+  .chip[aria-current="true"].done::after{background:currentColor}
+
+  /* ---------- voice console ---------- */
+  .console{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding:10px 12px; margin-top:12px;
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  }
+  .console label{display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted)}
+  .seg{
+    display:inline-flex; border:1px solid var(--line); border-radius:8px;
+    overflow:hidden; background:var(--surface-2);
+  }
+  .seg button{
+    border:0; background:transparent; color:var(--muted);
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px; font-weight:600;
+    letter-spacing:.06em; padding:6px 12px; transition:background .15s, color .15s;
+  }
+  .seg button + button{border-left:1px solid var(--line)}
+  .seg button:hover{color:var(--ink)}
+  .seg button[aria-pressed="true"]{background:var(--jade); color:var(--surface)}
+  .accentnote{
+    flex-basis:100%; font-size:11.5px; color:var(--warn);
+    font-family:"IBM Plex Mono",ui-monospace,monospace; margin-top:-4px;
+  }
+  select, input[type=range]{font-family:inherit}
+  select{
+    background:var(--surface-2); color:var(--ink); border:1px solid var(--line);
+    border-radius:7px; padding:5px 8px; font-size:12px; max-width:190px;
+  }
+  input[type=range]{accent-color:var(--jade); width:104px}
+  .rateval{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-2); min-width:34px}
+
+  /* ---------- buttons ---------- */
+  button{font-family:inherit; cursor:pointer}
+  .btn{
+    display:inline-flex; align-items:center; gap:7px;
+    border:1px solid var(--line-2); background:var(--surface); color:var(--ink);
+    padding:7px 13px; border-radius:8px; font-size:13px; font-weight:500;
+    transition:background .15s, border-color .15s, transform .08s;
+  }
+  .btn:hover{background:var(--surface-2)}
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--jade); border-color:var(--jade); color:#fff; font-weight:600}
+  :root[data-theme="dark"] .btn.primary,
+  :root:not([data-theme="light"]) .btn.primary{color:#07201A}
+  @media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .btn.primary{color:#fff}}
+  .btn.primary:hover{filter:brightness(1.06)}
+  .btn.rec{background:var(--bad); border-color:var(--bad); color:#fff}
+  .btn.ghost{border-color:transparent; background:transparent; color:var(--muted); padding:5px 8px}
+  .btn.ghost:hover{background:var(--surface-2); color:var(--ink)}
+  .btn:disabled{opacity:.42; cursor:not-allowed}
+  :focus-visible{outline:2px solid var(--jade); outline-offset:2px; border-radius:6px}
+
+  .play{
+    flex:0 0 auto; width:29px; height:29px; border-radius:50%;
+    border:1px solid var(--line-2); background:var(--surface); color:var(--jade);
+    display:grid; place-items:center; padding:0;
+    transition:background .15s, border-color .15s;
+  }
+  .play:hover{background:var(--jade-soft); border-color:var(--jade)}
+  .play svg{width:11px; height:11px; fill:currentColor}
+  .play.speaking{background:var(--jade); border-color:var(--jade); color:#fff}
+  .play.speaking svg{animation:pulse 1s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.4}}
+
+  /* ---------- day head ---------- */
+  .dayhead{padding:30px 0 22px; border-bottom:1px solid var(--line)}
+  .daynum{
+    font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600;
+    letter-spacing:.14em; color:var(--jade);
+  }
+  .daytitle{
+    font-family:"Newsreader",Georgia,serif; font-weight:400;
+    font-size:clamp(28px,6.4vw,40px); line-height:1.12; letter-spacing:-.01em;
+    margin:8px 0 10px;
+  }
+  .dayfocus{color:var(--ink-2); font-size:15px; max-width:56ch}
+  .dayband{display:flex; gap:16px; flex-wrap:wrap; margin-top:14px}
+  .dayband span{font-size:12px; color:var(--muted)}
+  .dayband b{color:var(--ink-2); font-weight:600}
+
+  /* ---------- stations ---------- */
+  .station{padding:26px 0; border-bottom:1px solid var(--line)}
+  .sthead{display:flex; align-items:baseline; gap:10px; margin-bottom:14px; flex-wrap:wrap}
+  .stnum{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
+    color:var(--jade); letter-spacing:.1em;
+  }
+  .sttitle{font-size:15px; font-weight:700; letter-spacing:-.01em}
+  .stmin{margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--muted)}
+  .sthint{font-size:13.5px; color:var(--muted); margin:-6px 0 14px; max-width:60ch}
+
+  /* script lines */
+  .line{
+    display:flex; align-items:flex-start; gap:11px; padding:9px 0;
+    border-top:1px solid var(--line);
+  }
+  .line:first-of-type{border-top:none}
+  .line p{
+    margin:0; font-family:"Newsreader",Georgia,serif; font-size:18.5px; line-height:1.45;
+    color:var(--ink);
+  }
+  .line.speaking p{color:var(--jade-ink)}
+  :root[data-theme="dark"] .line.speaking p{color:var(--jade-ink)}
+
+  .twister{
+    background:var(--jade-soft); border-radius:var(--r); padding:14px 16px;
+    display:flex; gap:12px; align-items:flex-start; margin-top:14px;
+  }
+  .twister p{
+    margin:0; font-family:"Newsreader",Georgia,serif; font-size:20px; line-height:1.4;
+    color:var(--ink);
+  }
+
+  .pairs{display:flex; flex-wrap:wrap; gap:7px; margin:4px 0 0}
+  .pair{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--surface); border:1px solid var(--line); border-radius:999px;
+    padding:4px 5px 4px 13px; font-size:14px;
+  }
+  .pair .a{font-weight:600; color:var(--jade)}
+  .pair .sep{color:var(--line-2)}
+  .pair .b{color:var(--ink-2)}
+  .pair .play{width:24px; height:24px}
+  .pair .play svg{width:9px; height:9px}
+
+  .tip{
+    font-size:13.5px; color:var(--ink-2); background:var(--surface);
+    border:1px solid var(--line); border-left:3px solid var(--gold);
+    border-radius:0 var(--r) var(--r) 0; padding:11px 14px; margin-bottom:14px;
+  }
+
+  /* shadowing */
+  .shadowbox{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+    padding:18px 18px 14px; box-shadow:var(--shadow);
+  }
+  .shadowbox p.script{
+    margin:0 0 14px; font-family:"Newsreader",Georgia,serif;
+    font-size:19px; line-height:1.62; color:var(--ink);
+  }
+  .shadowbox .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+
+  /* mic */
+  .micbox{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+    padding:18px; box-shadow:var(--shadow);
+  }
+  .prompt{
+    font-family:"Newsreader",Georgia,serif; font-size:20px; line-height:1.4;
+    margin:0 0 4px; color:var(--ink);
+  }
+  .microw{display:flex; gap:9px; align-items:center; flex-wrap:wrap; margin-top:14px}
+  .stats{display:flex; gap:18px; flex-wrap:wrap; margin-top:14px}
+  .stat{display:flex; flex-direction:column; gap:1px}
+  .stat b{
+    font-family:"IBM Plex Mono",monospace; font-size:19px; font-weight:600;
+    font-variant-numeric:tabular-nums; color:var(--ink); line-height:1.1;
+  }
+  .stat span{font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+  .stat.alert b{color:var(--warn)}
+  .transcript{
+    margin-top:14px; padding:13px 15px; background:var(--surface-2);
+    border-radius:var(--r); min-height:60px;
+    font-family:"Newsreader",Georgia,serif; font-size:16.5px; line-height:1.55; color:var(--ink-2);
+  }
+  .transcript:empty::before{content:"Your words appear here as you speak."; color:var(--muted); font-style:italic}
+  .transcript .interim{color:var(--muted)}
+  .transcript mark{background:var(--gold-soft); color:var(--ink); border-radius:3px; padding:0 2px}
+  .drillgrid{display:grid; gap:14px; grid-template-columns:1fr 1fr; margin-top:16px}
+  @media (max-width:560px){ .drillgrid{grid-template-columns:1fr} }
+  .pane{
+    background:var(--surface-2); border-radius:var(--r); padding:15px 16px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .pane h4{
+    margin:0; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted); font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600;
+  }
+  .bigclock{
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums;
+    font-size:38px; font-weight:600; line-height:1; letter-spacing:-.02em; color:var(--ink);
+  }
+  .bigclock.over{color:var(--good)}
+  .clockbar{height:6px; border-radius:4px; background:var(--line); overflow:hidden}
+  .clockbar i{display:block; height:100%; width:0%; background:var(--jade); border-radius:4px; transition:width .25s linear}
+  .clockbar i.over{background:var(--good)}
+  .tapbtn{
+    border:1px dashed var(--line-2); background:var(--surface); color:var(--ink);
+    border-radius:var(--r); padding:16px 12px; font-size:14px; font-weight:600;
+    display:flex; flex-direction:column; align-items:center; gap:3px; width:100%;
+    transition:background .12s, transform .06s, border-color .12s;
+  }
+  .tapbtn:hover{border-color:var(--gold); background:var(--gold-soft)}
+  .tapbtn:active{transform:scale(.98)}
+  .tapbtn b{
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:30px; font-weight:600;
+    font-variant-numeric:tabular-nums; line-height:1;
+  }
+  .tapbtn span{font-size:11px; color:var(--muted); font-weight:500; letter-spacing:.04em}
+  .checks{display:flex; flex-direction:column; gap:9px; margin-top:4px}
+  .checks label{
+    display:flex; gap:10px; align-items:flex-start; font-size:14px;
+    line-height:1.4; color:var(--ink-2); cursor:pointer;
+  }
+  .checks input{flex:0 0 auto; width:17px; height:17px; margin:1px 0 0; accent-color:var(--jade); cursor:pointer}
+  .checks label.on{color:var(--ink)}
+  details.advanced{margin-top:16px; border-top:1px solid var(--line); padding-top:14px}
+  details.advanced summary{
+    cursor:pointer; font-size:13px; color:var(--muted); font-weight:500; list-style:none;
+  }
+  details.advanced summary::-webkit-details-marker{display:none}
+  details.advanced summary::before{content:"▸ "; color:var(--jade)}
+  details.advanced[open] summary::before{content:"▾ "}
+  .meter{
+    height:8px; border-radius:5px; background:var(--surface-2);
+    overflow:hidden; margin-top:14px; position:relative;
+  }
+  .meter i{
+    display:block; height:100%; width:0%; border-radius:5px;
+    background:linear-gradient(90deg, var(--jade), var(--gold));
+    transition:width .06s linear;
+  }
+  .meter.idle i{background:var(--line-2)}
+  .meterlab{
+    display:flex; justify-content:space-between; margin-top:6px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10.5px; color:var(--muted);
+  }
+  .nosupport{
+    font-size:13px; color:var(--muted); margin-top:12px;
+    padding:10px 12px; background:var(--surface-2); border-radius:8px;
+  }
+
+  /* fix */
+  .fix{display:grid; gap:0; border:1px solid var(--line); border-radius:var(--r); overflow:hidden}
+  .fixrow{display:flex; gap:12px; align-items:flex-start; padding:13px 15px; background:var(--surface)}
+  .fixrow + .fixrow{border-top:1px solid var(--line)}
+  .fixtag{
+    flex:0 0 auto; font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:600;
+    letter-spacing:.1em; padding:3px 7px; border-radius:5px; margin-top:3px;
+  }
+  .fixtag.no{background:var(--gold-soft); color:var(--gold)}
+  .fixtag.yes{background:var(--jade-soft); color:var(--jade)}
+  .fixrow p{margin:0; font-family:"Newsreader",Georgia,serif; font-size:17.5px; line-height:1.4}
+  .fixwhy{font-size:13.5px; color:var(--muted); margin-top:11px; max-width:60ch}
+
+  /* mission */
+  .mission{
+    display:flex; gap:12px; align-items:flex-start;
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+    padding:16px 17px;
+  }
+  .mission input[type=checkbox]{
+    flex:0 0 auto; width:19px; height:19px; margin:2px 0 0; accent-color:var(--jade); cursor:pointer;
+  }
+  .mission label{font-family:"Newsreader",Georgia,serif; font-size:18px; line-height:1.45; cursor:pointer}
+  .mission.done label{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line-2)}
+
+  /* recorder */
+  .recorder{
+    margin-top:26px; background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--r); padding:18px;
+  }
+  .recorder h3{font-size:14px; font-weight:700; margin-bottom:4px}
+  .recorder .sub{font-size:13px; color:var(--muted); max-width:58ch; margin-bottom:14px}
+  .clips{display:flex; flex-direction:column; gap:10px; margin-top:14px}
+  .clip{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  .clip .name{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--muted); min-width:96px}
+  .clip audio{height:34px; flex:1 1 200px; min-width:0; max-width:100%}
+  .filerow{margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:13px; color:var(--muted)}
+  input[type=file]{font-size:12px; max-width:100%; color:var(--muted)}
+
+  /* footer nav */
+  .nav{display:flex; gap:10px; align-items:center; margin-top:26px; flex-wrap:wrap}
+  .nav .spacer{flex:1}
+
+  .doneline{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    margin-top:22px; padding-top:18px; border-top:1px solid var(--line);
+  }
+  .progressbar{flex:1 1 140px; height:5px; background:var(--surface-2); border-radius:3px; overflow:hidden; min-width:120px}
+  .progressbar i{display:block; height:100%; background:var(--jade); border-radius:3px; transition:width .3s}
+
+  .syncnote{font-size:11px; color:var(--muted); font-family:"IBM Plex Mono",monospace}
+
+  @media (max-width:520px){
+    .wrap{padding-inline:16px}
+    .line p{font-size:17px}
+    .shadowbox p.script{font-size:17.5px}
+    .console{gap:10px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important; transition:none !important}
+  }
+</style>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brandrow">
+      <div class="brand">Twenty Days <em>Out Loud</em></div>
+      <div class="brandmeta">
+        <span class="syncnote" id="syncnote">local</span>
+        <button class="btn ghost" id="themeBtn" title="Switch theme">◐</button>
+      </div>
+    </div>
+    <div class="rail" id="rail"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="console">
+    <label>Accent
+      <span class="seg" id="accentSeg" role="group" aria-label="Accent">
+        <button type="button" data-accent="gb" aria-pressed="false">UK</button>
+        <button type="button" data-accent="us" aria-pressed="false">US</button>
+      </span>
+    </label>
+    <label for="rateSel">Speed
+      <input type="range" id="rateSel" min="0.6" max="1.2" step="0.05" value="0.9">
+      <span class="rateval mono" id="rateVal">0.90×</span>
+    </label>
+    <button class="btn primary" id="testVoice">▶ Test voice</button>
+    <button class="btn ghost" id="stopAll">Stop</button>
+    <span class="syncnote" id="speechStat">loading audio…</span>
+    <div class="accentnote" id="accentNote" hidden></div>
+  </div>
+
+  <div class="dayhead">
+    <div class="daynum" id="dayNum">DAY 01 · WEEK 1 — THE MACHINERY</div>
+    <h1 class="daytitle" id="dayTitle">—</h1>
+    <p class="dayfocus" id="dayFocus">—</p>
+    <div class="dayband">
+      <span>Session <b>50 minutes</b></span>
+      <span>Six stations</span>
+      <span id="dayDone">Not finished</span>
+    </div>
+  </div>
+
+  <!-- 01 warm-up -->
+  <section class="station" id="st1">
+    <div class="sthead">
+      <span class="stnum">01</span><span class="sttitle">Warm-up — sound of the day</span>
+      <span class="stmin">8 min</span>
+    </div>
+    <p class="sthint" id="soundHint">—</p>
+    <div class="tip" id="soundTip">—</div>
+    <div class="pairs" id="pairs"></div>
+    <div class="twister">
+      <button class="play" data-clip="tw" aria-label="Play sentence"><svg viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z"/></svg></button>
+      <p id="twisterText">—</p>
+    </div>
+  </section>
+
+  <!-- 02 chunks -->
+  <section class="station" id="st2">
+    <div class="sthead">
+      <span class="stnum">02</span><span class="sttitle">Chunk pack — say these until they're automatic</span>
+      <span class="stmin">10 min</span>
+    </div>
+    <p class="sthint">Fluent speakers don't build sentences word by word. They reach for ready-made openings. Play each line, repeat it out loud three times, then say it once with your own ending.</p>
+    <div id="chunks"></div>
+    <div class="nav" style="margin-top:14px">
+      <button class="btn" id="playChunks">Play all with gaps</button>
+      <span class="syncnote" id="chunkState"></span>
+    </div>
+  </section>
+
+  <!-- 03 shadowing -->
+  <section class="station" id="st3">
+    <div class="sthead">
+      <span class="stnum">03</span><span class="sttitle">Shadowing — speak at the same time as the voice</span>
+      <span class="stmin">10 min</span>
+    </div>
+    <p class="sthint">Play it slow first and speak <em>along with</em> it, half a beat behind — don't wait for it to finish. Then take it up to full speed. This is the single fastest way to fix rhythm.</p>
+    <div class="shadowbox">
+      <p class="script" id="shadowText">—</p>
+      <div class="row">
+        <button class="btn" id="shadowSlow">Slow · 0.7×</button>
+        <button class="btn" id="shadowNormal">Normal · 1.0×</button>
+        <button class="btn primary" id="shadowLoop">Loop ×3</button>
+        <span class="syncnote" id="shadowState"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 speak -->
+  <section class="station" id="st4">
+    <div class="sthead">
+      <span class="stnum">04</span><span class="sttitle">Now you speak</span>
+      <span class="stmin">15 min</span>
+    </div>
+    <p class="sthint">Start the timer, then answer out loud until it runs out. Tap the counter every time you catch yourself saying “uh” — noticing it is most of the cure. Keep going through mistakes; never restart a sentence. None of this needs a microphone.</p>
+    <div class="micbox">
+      <p class="prompt" id="drillPrompt">—</p>
+      <p class="sthint" id="drillNote" style="margin:8px 0 0">—</p>
+
+      <div class="drillgrid">
+        <div class="pane">
+          <h4>Speaking timer</h4>
+          <div class="bigclock" id="bigClock">0:00</div>
+          <div class="clockbar"><i id="clockFill"></i></div>
+          <div class="meterlab"><span id="clockMsg">target —</span><span id="clockState"></span></div>
+          <div class="microw" style="margin-top:2px">
+            <button class="btn primary" id="timerBtn">Start</button>
+            <button class="btn ghost" id="timerReset">Reset</button>
+          </div>
+        </div>
+
+        <div class="pane">
+          <h4>Filler counter</h4>
+          <button class="tapbtn" id="tapBtn">
+            <b id="tapCount">0</b>
+            <span>tap every time you catch an “uh”</span>
+          </button>
+          <div class="meterlab"><span id="tapRate">—</span><span id="tapBest"></span></div>
+        </div>
+      </div>
+
+      <div class="pane" style="margin-top:14px">
+        <h4>After you finish — be honest</h4>
+        <div class="checks" id="checkList"></div>
+      </div>
+
+      <div class="filerow" style="margin-top:16px">
+        <label for="ownFile"><b>No microphone here?</b> Record on your phone's voice recorder, then load it:</label>
+        <input type="file" id="ownFile" accept="audio/*">
+      </div>
+      <div class="clips" id="ownClip"></div>
+
+      <details class="advanced" id="micAdvanced">
+        <summary>Use this device's microphone instead (live transcript &amp; filler detection)</summary>
+        <div class="microw">
+          <button class="btn primary" id="micBtn">Start speaking</button>
+          <button class="btn ghost" id="micCheck">Check microphone</button>
+          <button class="btn ghost" id="micClear">Clear</button>
+        </div>
+        <div class="meter idle" id="meter" aria-hidden="true"><i id="meterFill"></i></div>
+        <div class="meterlab"><span id="meterMsg">microphone idle</span><span id="meterPeak"></span></div>
+        <div class="stats">
+          <div class="stat"><b id="statTime">0:00</b><span>Time</span></div>
+          <div class="stat"><b id="statTalk">0:00</b><span>Talking</span></div>
+          <div class="stat"><b id="statPause">0</b><span>Long pauses</span></div>
+          <div class="stat"><b id="statWords">0</b><span>Words</span></div>
+          <div class="stat"><b id="statWpm">—</b><span>Words / min</span></div>
+          <div class="stat" id="fillerStat"><b id="statFiller">0</b><span>Fillers</span></div>
+        </div>
+        <div class="transcript" id="transcript"></div>
+        <div class="nosupport" id="micNote" hidden></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- 05 habit fix -->
+  <section class="station" id="st5">
+    <div class="sthead">
+      <span class="stnum">05</span><span class="sttitle">Habit fix</span>
+      <span class="stmin">3 min</span>
+    </div>
+    <p class="sthint">One phrase that sounds normal in Nepal and odd on an international call. Say the right-hand version out loud five times so it replaces the old one.</p>
+    <div class="fix">
+      <div class="fixrow">
+        <span class="fixtag no">NOT</span>
+        <p id="fixWrong">—</p>
+      </div>
+      <div class="fixrow">
+        <span class="fixtag yes">SAY</span>
+        <p id="fixRight">—</p>
+        <button class="play" data-clip="fx" aria-label="Play correct version" style="margin-left:auto"><svg viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z"/></svg></button>
+      </div>
+    </div>
+    <p class="fixwhy" id="fixWhy">—</p>
+  </section>
+
+  <!-- 06 mission -->
+  <section class="station" id="st6">
+    <div class="sthead">
+      <span class="stnum">06</span><span class="sttitle">Today's mission — out in the real world</span>
+      <span class="stmin">4 min</span>
+    </div>
+    <p class="sthint">The session is practice. This is the part that actually moves you. Do it before the day ends.</p>
+    <div class="mission" id="missionBox">
+      <input type="checkbox" id="missionChk">
+      <label for="missionChk" id="missionText">—</label>
+    </div>
+  </section>
+
+  <!-- recorder -->
+  <div class="recorder">
+    <h3>Recorder</h3>
+    <p class="sub">Record yourself, listen back, and save the file. On Day 1 save a two-minute baseline; on Day 20 load it back in and play the two side by side. That comparison is the whole programme in one minute.</p>
+    <div class="microw" style="margin-top:0">
+      <button class="btn rec" id="recBtn">● Record</button>
+      <span class="mono" id="recTime" style="font-size:13px; color:var(--muted)">0:00</span>
+    </div>
+    <div class="clips" id="clips"></div>
+    <div class="filerow">
+      <label for="cmpFile">Compare with a saved file:</label>
+      <input type="file" id="cmpFile" accept="audio/*">
+    </div>
+    <div class="clips" id="cmpClip"></div>
+  </div>
+
+  <div class="doneline">
+    <button class="btn primary" id="finishBtn">Mark day complete</button>
+    <div class="progressbar"><i id="progFill" style="width:0%"></i></div>
+    <span class="syncnote" id="progText">0 / 20</span>
+  </div>
+
+  <div class="nav">
+    <button class="btn" id="prevBtn">← Previous day</button>
+    <span class="spacer"></span>
+    <button class="btn" id="nextBtn">Next day →</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================ CONTENT ============================ */
+  const WEEKS = {
+    1:"WEEK 1 — THE MACHINERY", 2:"WEEK 1 — THE MACHINERY", 3:"WEEK 1 — THE MACHINERY",
+    4:"WEEK 1 — THE MACHINERY", 5:"WEEK 1 — THE MACHINERY", 6:"WEEK 1 — THE MACHINERY",
+    7:"WEEK 1 — THE MACHINERY",
+    8:"WEEK 2 — STRUCTURE", 9:"WEEK 2 — STRUCTURE", 10:"WEEK 2 — STRUCTURE",
+    11:"WEEK 2 — STRUCTURE", 12:"WEEK 2 — STRUCTURE", 13:"WEEK 2 — STRUCTURE",
+    14:"WEEK 2 — STRUCTURE",
+    15:"WEEK 3 — THE REAL ROOM", 16:"WEEK 3 — THE REAL ROOM", 17:"WEEK 3 — THE REAL ROOM",
+    18:"WEEK 3 — THE REAL ROOM", 19:"WEEK 3 — THE REAL ROOM", 20:"WEEK 3 — THE REAL ROOM"
+  };
+
+  const DAYS = [
+  {
+    n:1, title:"Your baseline, and the sound that gives you away",
+    focus:"Before anything improves, capture what today sounds like. Then fix the one consonant pair that marks almost every Nepali speaker of English.",
+    soundHint:"/v/ and /w/ — two sounds that are one sound in Nepali.",
+    tip:"For <b>v</b>, your top teeth touch your bottom lip and buzz. For <b>w</b>, your lips round like a whistle and your teeth touch nothing at all. Put a finger on your lip: it should be touched on every <b>v</b> and free on every <b>w</b>.",
+    pairs:[["very","wary"],["vest","west"],["vine","wine"],["veil","whale"],["viper","wiper"],["verse","worse"]],
+    twister:"We verified every version of the view before we went live.",
+    chunks:[
+      "To be honest, …",
+      "The way I see it, …",
+      "Here's the thing —",
+      "What I'd say is …",
+      "Let me start with …",
+      "The short answer is …"
+    ],
+    shadow:"I work in quality engineering. Most of my week is spent deciding what to automate and what to leave alone. People assume testing is about finding mistakes. It isn't, really. It's about telling everybody, honestly, how much risk they are about to ship.",
+    prompt:"Introduce yourself in forty-five seconds.",
+    note:"Name, role, how long you've been doing it, one thing you're good at, one thing you're working on right now. No apology, no throat-clearing.",
+    fixNo:"Myself Suraj. I am QA engineer.",
+    fixYes:"I'm Suraj. I'm a QA automation engineer.",
+    fixWhy:"\"Myself\" as an opening is South Asian English and lands oddly elsewhere. And countable job titles take an article: a QA engineer, an analyst, a developer.",
+    mission:"Record two unbroken minutes about your work. Save the file. Do not listen to it — you'll hear it again on Day 20."
+  },
+  {
+    n:2, title:"Where English hides its vowels",
+    focus:"Every English word has one loud syllable and the rest collapse into a lazy 'uh'. Get the loud one wrong and fluent listeners stumble.",
+    soundHint:"Word stress and the schwa — the most common vowel in English, and it has no sound of its own.",
+    tip:"Say <b>automation</b> as ə-tə-<b>MAY</b>-shn, not AU-TO-MA-TION. Nepali gives each syllable equal weight; English starves the weak ones. Exaggerate the drop — it will still sound less extreme than a native speaker's.",
+    pairs:[["auto·MA·tion","au·to·ma·tion"],["re·GRE·ssion","re·gre·ssion"],["en·VI·ron·ment","en·vi·ron·ment"],["de·VE·lop·ment","de·ve·lop·ment"],["EX·e·cute","ex·e·cute"],["com·pa·ti·BI·li·ty","com·pa·ti·bi·li·ty"]],
+    twister:"The automation environment needs a full regression run before development continues.",
+    chunks:[
+      "I usually start by …",
+      "The first thing I do is …",
+      "Right after that, I …",
+      "Once that's done, I move on to …",
+      "Most days I end up …",
+      "By the time I finish, …"
+    ],
+    shadow:"My mornings are fairly fixed. I check the overnight pipeline before I check anything else, because a red build changes the whole day. If it's green, I pick up whatever is blocked. If it's red, I stop and find out why, and everything else waits.",
+    prompt:"Describe your morning in sixty seconds — from waking up to your first test run.",
+    note:"Use the chunks above to move between steps. Don't list; narrate. Notice how often you can swallow a syllable instead of pronouncing it fully.",
+    fixNo:"I am having six years of experience.",
+    fixYes:"I have six years of experience.",
+    fixWhy:"Verbs of state — have, know, understand, believe, want — don't take the continuous in English. You can be <i>having lunch</i>, but you can't be <i>having experience</i>.",
+    mission:"Narrate your work out loud in English as you do it today. Alone, under your breath, all day."
+  },
+  {
+    n:3, title:"Loud words and fast words",
+    focus:"English is not a flat line. Content words get punched; the little joining words get raced through. That contrast is what people hear as 'fluent'.",
+    soundHint:"Sentence rhythm — stress the words that carry meaning, swallow the rest.",
+    tip:"In <i>I ran the suite and three tests failed</i>, only <b>ran, suite, three, tests, failed</b> get weight. The words <i>I, the, and</i> should be almost inaudible. Tap the table on the strong words while you say it.",
+    pairs:[["I RAN the SUITE","i ran the suite"],["THREE tests FAILED","three tests failed"],["it's a BUILD issue","it's a build issue"],["I'll SEND it TODAY","i'll send it today"],["WHAT do you THINK?","what do you think"],["we NEED more DATA","we need more data"]],
+    twister:"I ran the suite last night and three tests failed on the payment screen.",
+    chunks:[
+      "In my experience, …",
+      "I'd argue that …",
+      "What strikes me is …",
+      "I tend to think …",
+      "From what I've seen, …",
+      "If you ask me, …"
+    ],
+    shadow:"Not everything should be automated. That sounds strange coming from someone who writes automation for a living, but a test that breaks every second week costs more than it saves. I'd rather have forty tests people trust than four hundred that everyone has learned to ignore.",
+    prompt:"Should every test be automated? Ninety seconds. Take a side and defend it.",
+    note:"Pick one position in your first sentence. Don't say 'it depends' — that is how people avoid speaking.",
+    fixNo:"Let's discuss about the release.",
+    fixYes:"Let's discuss the release.",
+    fixWhy:"<i>Discuss</i> takes its object directly. The same with <i>enter</i>, <i>attend</i> and <i>request</i> — no preposition after them. You <i>talk about</i> something, but you <i>discuss</i> it.",
+    mission:"In your next meeting, say something in the first five minutes. Anything. Agreeing with someone counts."
+  },
+  {
+    n:4, title:"Where words melt into each other",
+    focus:"Native speakers don't say words one at a time. They run them together in blocks — and learners who don't do this sound careful, slow, and translated.",
+    soundHint:"Linking — a final consonant jumps onto the next word's vowel.",
+    tip:"<i>Pick it up</i> is not pick · it · up. It's <b>pi-ki-tup</b>. <i>What are you working on</i> becomes <b>wha-da-ya-workin-on</b>. Say the linked version fast, then slow it down without breaking the joins.",
+    pairs:[["pi-ki-tup","pick it up"],["che-ki-non","check in on"],["ru-ni-tagain","run it again"],["a-nour-an-da-half","an hour and a half"],["wha-da-ya-think","what do you think"],["lemme-know","let me know"]],
+    twister:"Can you pick it up, run it again, and let me know in an hour and a half?",
+    chunks:[
+      "Can I jump in here?",
+      "Just to build on that, …",
+      "Sorry — go ahead.",
+      "Can we park that for now?",
+      "Let me share my screen.",
+      "I'll follow up on that."
+    ],
+    shadow:"Yesterday I finished the login suite and pushed it. Today I'm picking up the checkout flow, which I expect will take most of the day. One blocker: I still don't have access to the staging database, so anything that needs real data is on hold until somebody sorts that out.",
+    prompt:"Give a sixty-second standup: yesterday, today, blockers.",
+    note:"Say it once looking at nothing. No notes, no script. If you lose the thread, pause and pick it back up — don't start over.",
+    fixNo:"Please do the needful.",
+    fixYes:"Could you take a look and fix the failing test?",
+    fixWhy:"<i>Do the needful</i> is opaque outside South Asia — the listener genuinely doesn't know what you're asking for. Name the action and the thing.",
+    mission:"Take one call today without reading from notes. Prepare three points in your head, then close the notebook."
+  },
+  {
+    n:5, title:"End your sentences downward",
+    focus:"A statement that rises at the end sounds like a question. Do it all day and every confident thing you say arrives sounding unsure.",
+    soundHint:"Falling intonation on statements — the single biggest confidence signal in English.",
+    tip:"Say <i>The build is green</i> and let your pitch drop on <b>green</b>, like stepping off a kerb. Now say it with a rise and hear how it turns into a request for approval. Record thirty seconds and listen only to your last words.",
+    pairs:[["The build is green ↘","The build is green ↗"],["I'll have it by Friday ↘","I'll have it by Friday ↗"],["That's the root cause ↘","That's the root cause ↗"],["It needs two more days ↘","It needs two more days ↗"],["I disagree ↘","I disagree ↗"],["That's my recommendation ↘","That's my recommendation ↗"]],
+    twister:"The build is green, the regression passed, and we're ready to ship.",
+    chunks:[
+      "What we found was …",
+      "The data shows …",
+      "It turns out …",
+      "The root cause was …",
+      "Long story short, …",
+      "So what that tells us is …"
+    ],
+    shadow:"Here's what happened. The checkout test failed intermittently, about one run in five. We assumed it was flakiness and ignored it for a week. It wasn't flakiness. There was a real race condition, and the test was the only thing telling us about it. We'd been ignoring the truth because it was inconvenient.",
+    prompt:"Report a real bug out loud: what you expected, what happened, how to reproduce it, and why it matters.",
+    note:"Every sentence ends downward. Especially the last one — that's where people decide whether to believe you.",
+    fixNo:"Please revert back to me.",
+    fixYes:"Let me know by Thursday.",
+    fixWhy:"<i>Revert</i> means to go back to an earlier state, so <i>revert back</i> is doubly wrong and it isn't used for replying. Use <i>reply</i>, <i>get back to me</i>, or <i>let me know</i> — and attach a day.",
+    mission:"Record thirty seconds. Listen once, and only for your sentence endings. Count how many rise."
+  },
+  {
+    n:6, title:"Silence beats 'uhh'",
+    focus:"Filler is not a language problem. It's the fear of two seconds of quiet. Fix the fear and your English improves without learning a single new word.",
+    soundHint:"The two-beat pause — replacing filler with deliberate silence.",
+    tip:"When you feel <i>uh</i> arriving, close your mouth and count two. A closed mouth cannot produce filler. It feels like an eternity to you and reads as thoughtfulness to everyone else.",
+    pairs:[["…[pause] Because","…uh, because"],["…[pause] So","…umm, so"],["…[pause] The point is","…you know, like"],["…[pause] Right","…basically, basically"],["…[pause] Let me think","…uhh, how to say"],["…[pause] Actually, no","…actually actually"]],
+    twister:"Let me think about that for a second before I answer properly.",
+    chunks:[
+      "That's a good question — let me think for a second.",
+      "Let me put it this way.",
+      "I want to be precise here.",
+      "Two things come to mind.",
+      "Give me a moment to get this right.",
+      "How do I explain this…"
+    ],
+    shadow:"I don't know. And I'd rather say that than guess in front of you. Let me check the logs after this call and come back to you with an actual answer by the end of the day. If it turns out to be what I suspect, we've got a bigger problem than one failing test.",
+    prompt:"Answer three questions in a row with zero fillers. Pause instead.",
+    note:"Ask yourself: What's the hardest part of your job? What would you change about how your team tests? Why did you start teaching? Two-beat pause before each answer.",
+    fixNo:"Can we prepone the meeting?",
+    fixYes:"Can we move the meeting earlier?",
+    fixWhy:"<i>Prepone</i> was invented in South Asia as the logical opposite of postpone — but it isn't used elsewhere and listeners genuinely won't parse it. Say <i>move it earlier</i> or <i>bring it forward</i>.",
+    mission:"Count your fillers in one real conversation today. Don't fix them yet. Just count."
+  },
+  {
+    n:7, title:"Two minutes, no net",
+    focus:"Everything from week one at once: the v, the stress, the rhythm, the falling endings, the silence. Unscripted.",
+    soundHint:"Integration — all six fixes running at the same time.",
+    tip:"You cannot think about six things while speaking. So pick <b>one</b> to hold in your head today and let the others run on whatever they've learned. Choose the one that felt hardest this week.",
+    pairs:[["very / wary","v vs w"],["auto·MA·tion","word stress"],["I RAN the SUITE","rhythm"],["pi-ki-tup","linking"],["green ↘","falling ends"],["…[pause]","no filler"]],
+    twister:"We verified the automation environment, ran the regression, and every single test passed.",
+    chunks:[
+      "To be honest, …",
+      "What we found was …",
+      "In my experience, …",
+      "Let me put it this way.",
+      "Long story short, …",
+      "So that's why I'd …"
+    ],
+    shadow:"The worst bug I ever found wasn't a crash. It was a rounding error in a report nobody read. It had been wrong for eleven months. Nothing broke, nothing alerted, and every single automated test passed — because we had tested that the number appeared, not that the number was right.",
+    prompt:"Two minutes on the hardest bug you ever found.",
+    note:"Beginning, middle, end. What you expected, what actually happened, what you learned. No restarting.",
+    fixNo:"I am working here since six years.",
+    fixYes:"I've been working here for six years.",
+    fixWhy:"<i>For</i> takes a length of time, <i>since</i> takes a starting point: for six years, since 2019. And a stretch of time that runs up to now takes the present perfect — <i>I've been working</i>, not <i>I am working</i>.",
+    mission:"Record two minutes. Then play Day 1's recording immediately after. Write down one thing that changed."
+  },
+  {
+    n:8, title:"Start before you're ready",
+    focus:"The stall happens because you wait until the whole sentence is built. Fluent speakers start talking with only the first three words ready.",
+    soundHint:"/θ/ — the th sound. Tongue tip lightly between your teeth.",
+    tip:"Nepali has no <b>th</b> as in <i>think</i>, so it usually comes out as <i>tink</i> or <i>sink</i>. Put your tongue tip visibly between your teeth and blow. It should look slightly silly. If it doesn't, your tongue is too far back.",
+    pairs:[["think","sink / tink"],["three","tree"],["through","true"],["method","medod"],["month","mont"],["both","bot"]],
+    twister:"I think there are three things worth checking in this month's build.",
+    chunks:[
+      "The main thing is …",
+      "There are two parts to this.",
+      "Let me back up a bit.",
+      "Broadly speaking, …",
+      "At a high level, …",
+      "It comes down to one thing: …"
+    ],
+    shadow:"There are two parts to this. The first is whether the feature works at all, which is easy to check and rarely where the risk is. The second is whether it still works when everything else changes around it — and that's the part that takes real effort.",
+    prompt:"Start speaking within one second of reading each topic. No thinking time.",
+    note:"Your last holiday. A tool you hate. What you'd change about your job. Nepal in ten years. Open with a chunk from above and let the rest arrive while you talk.",
+    fixNo:"What is your good name?",
+    fixYes:"What's your name?",
+    fixWhy:"<i>Good name</i> is a direct translation of a polite South Asian form and sounds puzzling in English — the listener wonders whether you're asking for a nickname.",
+    mission:"Answer the first question anybody asks you today without a pause before your first word."
+  },
+  {
+    n:9, title:"Any answer in four sentences",
+    focus:"Point, Reason, Example, Point. One structure that answers almost any question and makes you sound prepared even when you aren't.",
+    soundHint:"Consonant clusters at the end — the sounds QA vocabulary is full of.",
+    tip:"<i>Tests</i> is not <i>tes</i> and not <i>testes</i>. It ends in three consonants: t-s-t-s. Nepali doesn't stack consonants like this, so the instinct is to drop one or insert a vowel. Say the whole cluster deliberately, even slowly.",
+    pairs:[["tests","tes / testes"],["scripts","scrip"],["risks","risk"],["asked","ask / askéd"],["builds","build"],["results","resul"]],
+    twister:"The test scripts caught six risks in last night's builds.",
+    chunks:[
+      "My view is …",
+      "The reason is …",
+      "For example, last sprint …",
+      "Concretely, …",
+      "So that's why I'd …",
+      "Which brings me back to …"
+    ],
+    shadow:"My view is that we should automate the regression suite first. The reason is that it's the work we repeat most and trust least. For example, last sprint we spent three days re-running checks by hand and still missed a broken discount rule. So that's where I'd start.",
+    prompt:"Answer in exactly four sentences: should the team hire another manual tester, or invest in automation?",
+    note:"Sentence one is your position. Two is why. Three is a real example from your work. Four repeats the position in different words. Count them on your fingers as you go.",
+    fixNo:"I'll do the updation of the report.",
+    fixYes:"I'll update the report.",
+    fixWhy:"<i>Updation</i> isn't an English word. The same for <i>upgradation</i>. Use the verb, or the gerund: updating, upgrading.",
+    mission:"Use the four-sentence structure once in a real meeting today. Notice whether anyone interrupts you — they usually don't."
+  },
+  {
+    n:10, title:"Buying time, and recovering in public",
+    focus:"You will misspeak. What separates confident speakers is that they repair mid-sentence and carry on, instead of apologising and shrinking.",
+    soundHint:"-ed endings — three different sounds, and choosing wrong stops the listener.",
+    tip:"<b>passed</b> ends in a <i>t</i>. <b>failed</b> ends in a <i>d</i>. <b>executed</b> gets a whole extra syllable, <i>id</i>. The rule: after a voiceless sound it's t, after a voiced sound it's d, and after t or d it's id.",
+    pairs:[["passed = pasT","pass-ed"],["fixed = fixT","fix-ed"],["failed = failD","fail-ed"],["logged = logD","log-ed"],["executed = execute-ID","executeD"],["reported = report-ID","reportD"]],
+    twister:"I executed the suite, three tests failed, and I logged and reported all of them.",
+    chunks:[
+      "Sorry, let me rephrase that.",
+      "What I mean is …",
+      "Actually, scratch that —",
+      "Let me say that again, more clearly.",
+      "I misspoke — I meant …",
+      "Bear with me one second."
+    ],
+    shadow:"So we shipped on the Tuesday — sorry, the Wednesday, the Tuesday was the code freeze. We shipped on the Wednesday and by Thursday morning support had forty tickets, all about the same screen. What I mean is, the problem wasn't hard to find. It was hard to admit.",
+    prompt:"Tell a two-minute story and deliberately make a mistake in it. Repair it and keep going.",
+    note:"Repair, don't apologise. 'Sorry, let me rephrase' is a repair. 'Sorry, my English is bad' is an apology — and it's the one sentence that does real damage.",
+    fixNo:"Kindly send me the report. Kindly confirm. Kindly revert.",
+    fixYes:"Could you send me the report? And let me know once it's done.",
+    fixWhy:"<i>Kindly</i> isn't wrong, but repeated it reads as stiff and oddly formal, like a legal notice. <i>Could you</i> and <i>would you mind</i> are warmer and more normal.",
+    mission:"Correct yourself out loud, mid-sentence, once today — and don't apologise afterwards."
+  },
+  {
+    n:11, title:"Disagreeing without flinching",
+    focus:"Most people lose arguments in a second language not because they're wrong, but because they soften until the point disappears.",
+    soundHint:"/z/ — a buzzing s, not a j.",
+    tip:"<b>Zero</b> starts with a buzz, not a <i>j</i>. Put a finger on your throat: <i>s</i> is silent there, <i>z</i> vibrates. The same sound is hiding at the end of <i>tools</i>, <i>logs</i>, <i>bugs</i> and <i>years</i> — all of those end in z, not s.",
+    pairs:[["zero","jero"],["zip","jip"],["analyze","analyje"],["logs = logZ","logs = logS"],["bugs = bugZ","bugs = bugS"],["years = yearZ","years = yearS"]],
+    twister:"Zero results in the browser, so let's analyze the logs from those zones.",
+    chunks:[
+      "I see it differently.",
+      "I'm not sure I agree — here's why.",
+      "That's fair, but …",
+      "Can I offer another view?",
+      "I'd push back on that.",
+      "Before we decide, one concern: …"
+    ],
+    shadow:"I'm not sure I agree, and here's why. Manual testing feels faster because you see a result in ten minutes. But you pay that ten minutes again every single release, forever. Automation costs two days once. I'd rather pay once. That said, if this feature is being deleted next quarter, you're right and I'm wrong.",
+    prompt:"Someone says: 'Automation is a waste of time — manual testing is faster.' Push back for ninety seconds.",
+    note:"State your disagreement in the first sentence, not the fourth. Then concede one real point at the end — that's what makes disagreement land instead of grate.",
+    fixNo:"I am not agree with this.",
+    fixYes:"I don't agree with that.",
+    fixWhy:"<i>Agree</i> is a verb by itself, not an adjective — so it takes <i>don't</i>, not <i>am not</i>. Also useful: <i>I disagree</i>, or the softer <i>I'm not convinced</i>.",
+    mission:"Disagree with one person today, out loud, in English, politely. One sentence is enough."
+  },
+  {
+    n:12, title:"Explaining hard things simply",
+    focus:"Jargon is a hiding place. The real test of your English is whether you can explain your work to someone who knows nothing about it.",
+    soundHint:"/æ/ and /e/ — bad and bed, and the confusion they cause.",
+    tip:"For <b>bad</b>, open your mouth wide and drop your jaw — it's a long, flat, almost rude-sounding vowel. For <b>bed</b>, the mouth is half that size. Nepali speakers usually land somewhere between the two, and listeners hear the wrong word.",
+    pairs:[["bad","bed"],["sand","send"],["man","men"],["and","end"],["had","head"],["track","trek"]],
+    twister:"The bad data was sent back before the sprint had ended.",
+    chunks:[
+      "Think of it like …",
+      "In plain terms, …",
+      "It's basically …",
+      "Imagine you're …",
+      "Strip it down and it's just …",
+      "The simplest way to put it: …"
+    ],
+    shadow:"Think of it like a factory line. Every time someone changes a part of the product, a machine automatically builds the whole thing and checks that nothing else fell over. If something did, everybody hears about it in ten minutes instead of finding out from a customer three weeks later.",
+    prompt:"Explain continuous integration to someone who has never written a line of code. Ninety seconds, no jargon.",
+    note:"Banned words: pipeline, deploy, commit, repository, build, environment. If you reach for one, find a picture instead.",
+    fixNo:"The output is same same.",
+    fixYes:"The output is the same.",
+    fixWhy:"<i>Same same</i> is a regional intensifier that doesn't carry. Say <i>exactly the same</i>, or <i>identical</i>, if you want the emphasis.",
+    mission:"Explain one thing from your job to someone non-technical — your family, a friend, anyone. In English."
+  },
+  {
+    n:13, title:"Ask, don't nod",
+    focus:"The most expensive habit in a second language is pretending you understood. It costs you twice: once in the meeting, once when the work comes back wrong.",
+    soundHint:"t and d on the ridge, not curled back.",
+    tip:"Nepali <i>ट</i> and <i>ड</i> are made with the tongue curled back. English <b>t</b> and <b>d</b> touch the little ridge just behind your top teeth — much further forward. The difference is small but it's most of what people call 'the accent'. Try <b>better</b>, <b>data</b>, <b>matter</b>.",
+    pairs:[["better","beṭṭer"],["computer","compuṭer"],["data","ḍata"],["matter","maṭṭer"],["letter","leṭṭer"],["update","upḍate"]],
+    twister:"The data matters more than the computer, so let's get the details better.",
+    chunks:[
+      "Sorry, could you say that again?",
+      "I didn't catch the last part.",
+      "Do you mean X, or Y?",
+      "Just so I'm clear —",
+      "Can you give me an example?",
+      "Let me repeat that back to you."
+    ],
+    shadow:"Just so I'm clear — you want the full regression before Friday, not just the payment flow? Let me repeat that back to you. Full suite, all browsers, signed off by Friday midday. If that's right, I need to tell you now that it isn't going to happen without dropping something else.",
+    prompt:"Practise not understanding. Ask for clarification three different ways.",
+    note:"Repeating back what you heard is the strongest version — it proves you listened and quietly corrects any misunderstanding before it costs anyone a day.",
+    fixNo:"Sir, I have a doubt.",
+    fixYes:"I have a question.",
+    fixWhy:"In English, <i>doubt</i> means you suspect something is false — 'I doubt that will work.' Asking about something you don't understand is a <i>question</i>.",
+    mission:"Ask someone to repeat themselves today instead of nodding. Once is enough."
+  },
+  {
+    n:14, title:"A full meeting, start to finish",
+    focus:"Everything from week two under pressure: structure, recovery, disagreement, clarification. One continuous run.",
+    soundHint:"Integration — week two under load.",
+    tip:"Do this one standing up, out loud, at full volume. Sitting and mumbling is a different skill from standing and being heard, and only one of them is what a meeting actually asks of you.",
+    pairs:[["think / three","th"],["tests / scripts","clusters"],["passed / failed","-ed"],["zero / logs","z"],["bad / bed","æ vs e"],["better / data","forward t"]],
+    twister:"Three tests failed, zero of them were flaky, and the data says it's a real bug.",
+    chunks:[
+      "Quick update from my side —",
+      "The blocker is …",
+      "I'd push back on that.",
+      "Just so I'm clear —",
+      "What I'd recommend is …",
+      "I'll come back to you by …"
+    ],
+    shadow:"Quick update from my side. The login suite is done and green. Checkout is half written and I expect to finish it tomorrow. The blocker is still database access — it's been four days now, and everything that needs real data is sitting idle behind it. I'd like a decision today on who owns that.",
+    prompt:"Run a full standup, then defend one bug's priority for two minutes.",
+    note:"Part one: yesterday, today, blockers, in sixty seconds. Part two: somebody says your critical bug is a 'nice to have'. Hold your position, concede one point, propose a compromise.",
+    fixNo:"I'll be out of station next week.",
+    fixYes:"I'll be out of the office next week.",
+    fixWhy:"<i>Out of station</i> is South Asian English, from railway usage. Elsewhere: <i>out of the office</i>, <i>away</i>, or <i>travelling</i>.",
+    mission:"Compare today's recording with Day 7's. Note one thing that's better and one that's still there."
+  },
+  {
+    n:15, title:"The status update",
+    focus:"The most frequent speaking you'll ever do. Done badly it's rambling; done well it takes ninety seconds and makes you look in control.",
+    soundHint:"Numbers — thirteen and thirty, fifteen and fifty.",
+    tip:"<b>Thirteen</b> has the stress at the end and a long final syllable: thir-<b>TEEN</b>. <b>Thirty</b> stresses the front and ends flat: <b>THIR</b>-ty. Get this wrong in an estimate and someone plans around the wrong number.",
+    pairs:[["thir·TEEN","THIR·ty"],["four·TEEN","FOR·ty"],["fif·TEEN","FIF·ty"],["six·TEEN","SIX·ty"],["eigh·TEEN","EIGH·ty"],["nine·TEEN","NINE·ty"]],
+    twister:"We ran fifteen hundred tests and fifty of them failed — not fifteen.",
+    chunks:[
+      "We're on track for …",
+      "We're slightly behind on …",
+      "The blocker is …",
+      "I need a decision on …",
+      "Nothing's changed since …",
+      "Heads up —"
+    ],
+    shadow:"Quick status. We're on track for the Friday release on everything except reporting, which is about two days behind. The blocker there is the data migration, and that isn't mine to fix. What I need from this meeting is a decision: do we ship without reporting, or do we move the date?",
+    prompt:"Give a ninety-second weekly status: progress, risk, and one ask.",
+    note:"Always end with the ask. A status update with no ask is just noise — people listen much harder when they know a decision is coming.",
+    fixNo:"I'll finish it today morning.",
+    fixYes:"I'll finish it this morning.",
+    fixWhy:"<i>Today morning</i> and <i>yesterday night</i> are translated forms. English uses <i>this morning</i>, <i>last night</i>, <i>tomorrow evening</i>.",
+    mission:"Say your status update out loud before you write it. Notice which version is clearer."
+  },
+  {
+    n:16, title:"Holding your ground with a client",
+    focus:"Saying no in a second language feels twice as rude as it is. It isn't rude. It's the reason people trust an estimate.",
+    soundHint:"Polite intonation — rise, then fall.",
+    tip:"<i>Would you be able to…</i> rises in the middle and falls at the end. A flat delivery of a polite phrase sounds sarcastic; a rising ending sounds unsure. Rise on the middle, land on the last word.",
+    pairs:[["Would you be ABLE to ↘","Would you be able TO ↗"],["I'd RECOMMEND ↘","I'd recommend ↗"],["That WON'T work ↘","That won't work ↗"],["I need until THURSDAY ↘","I need until Thursday ↗"],["Happy to WALK you through ↘","Happy to walk you through ↗"],["The trade-off IS ↘","The trade-off is ↗"]],
+    twister:"I'd recommend Thursday, and I'm happy to walk you through the trade-off.",
+    chunks:[
+      "Just to set expectations, …",
+      "What I'd recommend is …",
+      "The trade-off here is …",
+      "If we do that, we lose …",
+      "I'd need until Thursday for that.",
+      "Happy to walk you through it."
+    ],
+    shadow:"Just to set expectations — a full regression takes five days, not two. I can give you two days of testing, but then we're covering the payment flow only and shipping the rest untested. That's a real risk and I'd want it written down. Or we move the date to Friday and I'll sign off on all of it.",
+    prompt:"A client wants full regression in two days. It takes five. Hold your position for two minutes.",
+    note:"Never just refuse. Say no, give the reason in numbers, then offer two real options and let them choose. That's not resistance — that's being useful.",
+    fixNo:"I will revert with the update.",
+    fixYes:"I'll get back to you by Thursday with an update.",
+    fixWhy:"Two fixes in one: <i>revert</i> doesn't mean reply, and an update with no date isn't a commitment. Always attach the day.",
+    mission:"Say one 'no' today with a reason and an alternative attached."
+  },
+  {
+    n:17, title:"Five stories that answer every interview",
+    focus:"Almost every behavioural question is one of five stories, retold with a different emphasis. Have them ready and interviews stop being improvisation.",
+    soundHint:"Irregular past tenses — the verbs you need most under pressure.",
+    tip:"Under stress, learners fall back on the present tense. Drill the past forms until they arrive by themselves: <b>led, built, ran, caught, cut, shipped, wrote, taught, chose, found</b>. Say each one in a full sentence about your own work.",
+    pairs:[["led","leaded"],["built","builded"],["ran","runned"],["caught","catched"],["wrote","writed"],["taught","teached"]],
+    twister:"I led the team, built the framework, ran the suite, and caught the bug.",
+    chunks:[
+      "The situation was …",
+      "My job was to …",
+      "So what I did was …",
+      "The result was …",
+      "What I'd do differently: …",
+      "That's when I learned …"
+    ],
+    shadow:"The situation was that we had no automation at all and a release every two weeks. My job was to change that without stopping the releases. So what I did was start with the twenty tests we ran by hand every single time. The result was that regression went from two days to forty minutes. What I'd do differently is involve the developers much earlier.",
+    prompt:"Tell your five stories. Ninety seconds each.",
+    note:"A failure. A conflict with someone. A clear win. A time you led. A time you changed your mind. Use the chunks as rails — situation, task, action, result, reflection.",
+    fixNo:"I did my passing out in 2019.",
+    fixYes:"I graduated in 2019.",
+    fixWhy:"In international English, <i>passing out</i> means fainting — or, in the army, completing officer training. For university, use <i>graduated</i>.",
+    mission:"Write down only the five story titles. Nothing else. Then say all five out loud from the titles alone."
+  },
+  {
+    n:18, title:"Teaching, which is your home ground",
+    focus:"You already teach. This is the one situation where you know more than everyone listening — so it's the fastest place to build real presence.",
+    soundHint:"Pace — around 140 words a minute, not 190.",
+    tip:"Nervousness speeds you up, and speed is what makes an accent hard to follow — far more than the accent itself. Time yourself: read the shadowing passage aloud and aim for roughly fifty-five seconds. If you finish in forty, you're racing.",
+    pairs:[["140 wpm · clear","190 wpm · lost"],["pause after a point","straight on"],["one idea per sentence","three ideas, one breath"],["look up","read down"],["land the last word","trail off"],["repeat the key term","assume it stuck"]],
+    twister:"By the end of this lesson, you'll be able to write and run your first test.",
+    chunks:[
+      "By the end of this, you'll be able to …",
+      "Here's why this matters: …",
+      "A common mistake is …",
+      "Let's do it together.",
+      "Quick recap: …",
+      "Any questions before I move on?"
+    ],
+    shadow:"By the end of this video you'll have written your first working test and watched it pass. Here's why that matters: most people give up at the setup, not the code. So we're going to get one green tick on the screen in the next six minutes, and everything else can come later.",
+    prompt:"Teach a three-minute lesson: 'Your first Playwright test.' Out loud, standing, camera on if you can.",
+    note:"Open with what they'll be able to do, not what you'll cover. Recap at the end. Ask for questions even when nobody's there.",
+    fixNo:"Today we will learn about what is a locator.",
+    fixYes:"Today we'll learn what a locator is.",
+    fixWhy:"Embedded questions go back to normal word order: <i>what a locator is</i>, not <i>what is a locator</i>. The same with <i>I don't know where it is</i> and <i>tell me why it failed</i>.",
+    mission:"Record one TechWorld Labs clip in English today. Unscripted. Publish it or don't — recording it is the point."
+  },
+  {
+    n:19, title:"The talk before the talk",
+    focus:"Small talk is where most non-native speakers freeze, because there's no agenda to hide behind. It's also where trust gets built.",
+    soundHint:"Relaxed speech — the way English actually sounds off-duty.",
+    tip:"Careful pronunciation in casual conversation sounds formal and distant. <i>What have you been up to</i> is really <b>wha-cha-been-up-to</b>. Practise the lazy version — it signals ease, and ease is what people read as confidence.",
+    pairs:[["how's it goin'","how is it going"],["wha-cha been up to","what have you been up to"],["not much, you?","nothing much"],["yeah, totally","yes, certainly"],["I know what you mean","I am knowing your meaning"],["kinda / sorta","kind of / sort of"]],
+    twister:"Hey — how's it going? What have you been up to this week?",
+    chunks:[
+      "How's your week been?",
+      "What are you working on these days?",
+      "Oh, that's interesting — tell me more.",
+      "Same here, actually.",
+      "I've been meaning to ask you —",
+      "Good to finally meet you."
+    ],
+    shadow:"Good to finally meet you — I've seen your name on about forty pull requests. How's your week been? Ah, same here, actually. We're in the middle of a release too, so I've mostly been living in the test reports. What are you working on these days, when nobody's breaking anything?",
+    prompt:"Five minutes of small talk. No work topics for the first two.",
+    note:"The whole trick is asking a question back. You're not being examined — you're taking turns. Someone who asks good questions is remembered as a good conversationalist.",
+    fixNo:"How are you? — I am fine. And my project is going on and last week I was…",
+    fixYes:"How are you? — Good, thanks. You?",
+    fixWhy:"<i>How are you</i> is a greeting, not a request for a report. Answer in three words and hand it back. The real conversation starts on the next question.",
+    mission:"Start one conversation you didn't have to start. With anyone."
+  },
+  {
+    n:20, title:"Ten minutes, and the recording from Day 1",
+    focus:"No new technique. Ten unbroken minutes, and then the only measurement that matters.",
+    soundHint:"Everything, at once, without thinking about any of it.",
+    tip:"Don't monitor yourself today. Monitoring is what you did for nineteen days so that today you wouldn't have to. Just talk, and let whatever has changed show up on its own.",
+    pairs:[["very / wary","day 1"],["auto·MA·tion","day 2"],["pi-ki-tup","day 4"],["green ↘","day 5"],["think / three","day 8"],["…[pause]","day 6"]],
+    twister:"I've spent twenty days speaking out loud, and I'm not apologising for my English again.",
+    chunks:[
+      "To be honest, …",
+      "The way I see it, …",
+      "Let me put it this way.",
+      "What I'd recommend is …",
+      "Long story short, …",
+      "That's when I learned …"
+    ],
+    shadow:"Twenty days ago I'd have thought about that sentence in Nepali first, translated it, checked it, and then said it too quietly. I still make mistakes. I just don't stop for them any more. That turned out to be the whole difference — not vocabulary, not grammar. Just not stopping.",
+    prompt:"Ten minutes. Unscripted. Any topic. No stopping.",
+    note:"Start the recorder below, press start, and talk until the timer says ten. If you run out of things to say, describe the room. Silence is allowed; stopping is not.",
+    fixNo:"Sorry, my English is not so good.",
+    fixYes:"(Say nothing. Begin.)",
+    fixWhy:"This is the sentence that undoes everything else. It tells the listener to start doubting you before you've made your point. You've done twenty days — you don't need it any more.",
+    mission:"Load your Day 1 recording into the comparison player and play both. That gap is what twenty days bought you."
+  }
+  ];
+
+  /* ============================ STATE ============================ */
+  const LS_KEY = "tdol.progress.v1";
+  let state = { current: 1, days: {} };
+  let db = null, downloads = null;
+
+  function loadLocal(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      if(raw) state = Object.assign(state, JSON.parse(raw));
+    }catch(e){/* private mode */}
+  }
+  function saveLocal(){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){}
+  }
+  let saveTimer = null;
+  function save(){
+    saveLocal();
+    if(!db) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>{
+      try{ db.doc("progress/main").set(JSON.parse(JSON.stringify(state))); }catch(e){}
+    }, 500);
+  }
+  function dayState(n){
+    if(!state.days[n]) state.days[n] = { complete:false, mission:false };
+    return state.days[n];
+  }
+
+  /* ============================ SPEECH OUT ============================ */
+  // Every line on this page ships as real recorded audio — one file per day per
+  // accent, generated with a neural voice — so nothing here depends on the
+  // device having a speech engine of its own.
+  const CLIPS = {"us":{"1":{"p0":[0.0,1.024],"p1":[1.374,0.896],"p2":[2.62,0.848],"p3":[3.818,0.832],"p4":[5.0,0.912],"p5":[6.262,0.992],"tw":[7.604,3.264],"c0":[11.218,1.04],"c1":[12.608,1.024],"c2":[13.982,1.136],"c3":[15.468,1.008],"c4":[16.826,1.168],"c5":[18.344,1.2],"sh":[19.894,13.6],"fx":[33.844,2.976]},"2":{"p0":[0.0,1.072],"p1":[1.422,1.152],"p2":[2.924,1.088],"p3":[4.362,0.96],"p4":[5.672,0.832],"p5":[6.854,1.408],"tw":[8.612,4.592],"c0":[13.554,1.648],"c1":[15.552,1.44],"c2":[17.342,1.584],"c3":[19.276,2.0],"c4":[21.626,1.312],"c5":[23.288,1.28],"sh":[24.918,13.392],"fx":[38.66,2.016]},"3":{"p0":[0.0,1.024],"p1":[1.374,1.296],"p2":[3.02,1.248],"p3":[4.618,1.328],"p4":[6.296,1.984],"p5":[8.63,1.28],"tw":[10.26,3.744],"c0":[14.354,1.2],"c1":[15.904,0.928],"c2":[17.182,1.232],"c3":[18.764,1.12],"c4":[20.234,1.104],"c5":[21.688,1.056],"sh":[23.094,13.712],"fx":[37.156,1.552]},"4":{"p0":[0.0,1.6],"p1":[1.95,1.408],"p2":[3.708,1.664],"p3":[5.722,2.08],"p4":[8.152,1.696],"p5":[10.198,1.28],"tw":[11.828,4.272],"c0":[16.45,1.12],"c1":[17.92,1.184],"c2":[19.454,1.12],"c3":[20.924,1.6],"c4":[22.874,1.488],"c5":[24.712,1.392],"sh":[26.454,14.688],"fx":[41.492,2.128]},"5":{"p0":[0.0,1.152],"p1":[1.502,1.456],"p2":[3.308,1.28],"p3":[4.938,1.744],"p4":[7.032,0.896],"p5":[8.278,1.376],"tw":[10.004,3.376],"c0":[13.73,1.264],"c1":[15.344,1.008],"c2":[16.702,1.04],"c3":[18.092,1.216],"c4":[19.658,1.328],"c5":[21.336,1.488],"sh":[23.174,15.792],"fx":[39.316,1.488]},"6":{"p0":[0.0,1.76],"p1":[2.11,1.296],"p2":[3.756,1.84],"p3":[5.946,2.016],"p4":[8.312,2.08],"p5":[10.742,2.848],"tw":[13.94,3.152],"c0":[17.442,2.656],"c1":[20.448,1.408],"c2":[22.206,1.392],"c3":[23.948,1.28],"c4":[25.578,1.824],"c5":[27.752,1.712],"sh":[29.814,12.384],"fx":[42.548,1.648]},"7":{"p0":[0.0,2.384],"p1":[2.734,1.984],"p2":[5.068,1.568],"p3":[6.986,1.216],"p4":[8.552,1.152],"p5":[10.054,0.992],"tw":[11.396,5.376],"c0":[17.122,1.12],"c1":[18.592,1.28],"c2":[20.222,1.216],"c3":[21.788,1.456],"c4":[23.594,1.296],"c5":[25.24,1.232],"sh":[26.822,15.264],"fx":[42.436,1.984]},"8":{"p0":[0.0,1.12],"p1":[1.47,0.784],"p2":[2.604,0.736],"p3":[3.69,0.88],"p4":[4.92,0.736],"p5":[6.006,0.784],"tw":[7.14,3.056],"c0":[10.546,1.152],"c1":[12.048,1.472],"c2":[13.87,1.2],"c3":[15.42,1.152],"c4":[16.922,0.944],"c5":[18.216,1.872],"sh":[20.438,11.792],"fx":[32.58,0.848]},"9":{"p0":[0.0,1.648],"p1":[1.998,0.96],"p2":[3.308,1.072],"p3":[4.73,1.568],"p4":[6.648,0.912],"p5":[7.91,1.088],"tw":[9.348,3.312],"c0":[13.01,0.88],"c1":[14.24,0.848],"c2":[15.438,1.888],"c3":[17.676,0.864],"c4":[18.89,1.248],"c5":[20.488,1.536],"sh":[22.374,14.256],"fx":[36.98,1.44]},"10":{"p0":[0.0,2.032],"p1":[2.382,2.064],"p2":[4.796,1.824],"p3":[6.97,2.032],"p4":[9.352,2.944],"p5":[12.646,2.416],"tw":[15.412,4.672],"c0":[20.434,1.744],"c1":[22.528,1.024],"c2":[23.902,1.648],"c3":[25.9,2.24],"c4":[28.49,1.216],"c5":[30.056,1.504],"sh":[31.91,13.664],"fx":[45.924,2.848]},"11":{"p0":[0.0,1.008],"p1":[1.358,0.608],"p2":[2.316,1.36],"p3":[4.026,3.024],"p4":[7.4,2.832],"p5":[10.582,2.8],"tw":[13.732,4.224],"c0":[18.306,1.36],"c1":[20.016,2.32],"c2":[22.686,1.232],"c3":[24.268,1.376],"c4":[25.994,1.488],"c5":[27.832,2.416],"sh":[30.598,18.256],"fx":[49.204,1.408]},"12":{"p0":[0.0,0.88],"p1":[1.23,0.816],"p2":[2.396,0.752],"p3":[3.498,0.672],"p4":[4.52,0.624],"p5":[5.494,0.832],"tw":[6.676,2.816],"c0":[9.842,0.88],"c1":[11.072,1.184],"c2":[12.606,1.056],"c3":[14.012,0.912],"c4":[15.274,1.488],"c5":[17.112,1.712],"sh":[19.174,14.464],"fx":[33.988,1.584]},"13":{"p0":[0.0,2.992],"p1":[3.342,2.88],"p2":[6.572,2.064],"p3":[8.986,3.232],"p4":[12.568,3.248],"p5":[16.166,2.832],"tw":[19.348,3.664],"c0":[23.362,1.792],"c1":[25.504,1.76],"c2":[27.614,1.728],"c3":[29.692,1.184],"c4":[31.226,1.632],"c5":[33.208,1.904],"sh":[35.462,15.28],"fx":[51.092,1.056]},"14":{"p0":[0.0,1.264],"p1":[1.614,2.08],"p2":[4.044,1.648],"p3":[6.042,1.44],"p4":[7.832,1.728],"p5":[9.91,1.632],"tw":[11.892,4.48],"c0":[16.722,1.52],"c1":[18.592,1.04],"c2":[19.982,1.504],"c3":[21.836,1.168],"c4":[23.354,1.408],"c5":[25.112,1.488],"sh":[26.95,16.192],"fx":[43.492,1.968]},"15":{"p0":[0.0,2.016],"p1":[2.366,2.064],"p2":[4.78,1.904],"p3":[7.034,1.968],"p4":[9.352,2.24],"p5":[11.942,1.68],"tw":[13.972,4.16],"c0":[18.482,1.2],"c1":[20.032,1.584],"c2":[21.966,1.04],"c3":[23.356,1.264],"c4":[24.97,1.552],"c5":[26.872,0.672],"sh":[27.894,14.24],"fx":[42.484,1.424]},"16":{"p0":[0.0,1.2],"p1":[1.55,0.864],"p2":[2.764,0.912],"p3":[4.026,1.456],"p4":[5.832,1.408],"p5":[7.59,1.12],"tw":[9.06,3.456],"c0":[12.866,1.696],"c1":[14.912,1.28],"c2":[16.542,1.168],"c3":[18.06,1.792],"c4":[20.202,1.776],"c5":[22.328,1.248],"sh":[23.926,15.312],"fx":[39.588,2.528]},"17":{"p0":[0.0,0.736],"p1":[1.086,0.768],"p2":[2.204,0.8],"p3":[3.354,1.04],"p4":[4.744,0.832],"p5":[5.926,0.784],"tw":[7.06,3.664],"c0":[11.074,1.184],"c1":[12.608,1.056],"c2":[14.014,1.232],"c3":[15.596,1.024],"c4":[16.97,1.264],"c5":[18.584,1.024],"sh":[19.958,17.936],"fx":[38.244,2.208]},"18":{"p0":[0.0,4.4],"p1":[4.75,1.776],"p2":[6.876,3.12],"p3":[10.346,1.216],"p4":[11.912,1.696],"p5":[13.958,2.032],"tw":[16.34,3.968],"c0":[20.658,2.368],"c1":[23.376,1.456],"c2":[25.182,1.28],"c3":[26.812,1.12],"c4":[28.282,0.912],"c5":[29.544,1.904],"sh":[31.798,13.968],"fx":[46.116,2.032]},"19":{"p0":[0.0,2.192],"p1":[2.542,2.32],"p2":[5.212,2.272],"p3":[7.834,2.064],"p4":[10.248,2.496],"p5":[13.094,2.032],"tw":[15.476,2.688],"c0":[18.514,1.376],"c1":[20.24,1.776],"c2":[22.366,2.48],"c3":[25.196,1.488],"c4":[27.034,1.712],"c5":[29.096,1.408],"sh":[30.854,14.832],"fx":[46.036,2.352]},"20":{"p0":[0.0,1.488],"p1":[1.838,1.76],"p2":[3.948,1.488],"p3":[5.786,1.008],"p4":[7.144,1.216],"p5":[8.71,1.168],"tw":[10.228,4.736],"c0":[15.314,1.184],"c1":[16.848,0.992],"c2":[18.19,1.392],"c3":[19.932,1.44],"c4":[21.722,1.36],"c5":[23.432,1.072],"sh":[24.854,15.136],"fx":[40.34,1.344]}},"gb":{"1":{"p0":[0.0,1.024],"p1":[1.374,0.928],"p2":[2.652,0.768],"p3":[3.77,0.88],"p4":[5.0,1.184],"p5":[6.534,0.928],"tw":[7.812,3.344],"c0":[11.506,0.976],"c1":[12.832,1.024],"c2":[14.206,1.84],"c3":[16.396,1.024],"c4":[17.77,1.2],"c5":[19.32,1.184],"sh":[20.854,14.624],"fx":[35.828,2.816]},"2":{"p0":[0.0,1.104],"p1":[1.454,1.168],"p2":[2.972,1.12],"p3":[4.442,0.832],"p4":[5.624,0.864],"p5":[6.838,1.328],"tw":[8.516,4.592],"c0":[13.458,1.552],"c1":[15.36,1.472],"c2":[17.182,1.232],"c3":[18.764,1.648],"c4":[20.762,1.248],"c5":[22.36,1.376],"sh":[24.086,12.896],"fx":[37.332,2.256]},"3":{"p0":[0.0,0.992],"p1":[1.342,0.992],"p2":[2.684,1.216],"p3":[4.25,1.12],"p4":[5.72,2.144],"p5":[8.214,1.344],"tw":[9.908,3.472],"c0":[13.73,1.312],"c1":[15.392,1.056],"c2":[16.798,1.264],"c3":[18.412,1.024],"c4":[19.786,0.96],"c5":[21.096,1.232],"sh":[22.678,14.848],"fx":[37.876,1.392]},"4":{"p0":[0.0,1.376],"p1":[1.726,1.792],"p2":[3.868,1.744],"p3":[5.962,2.064],"p4":[8.376,1.696],"p5":[10.422,1.28],"tw":[12.052,4.336],"c0":[16.738,1.488],"c1":[18.576,1.28],"c2":[20.206,1.312],"c3":[21.868,1.36],"c4":[23.578,1.392],"c5":[25.32,1.488],"sh":[27.158,14.352],"fx":[41.86,2.368]},"5":{"p0":[0.0,1.184],"p1":[1.534,1.216],"p2":[3.1,1.12],"p3":[4.57,1.392],"p4":[6.312,0.896],"p5":[7.558,1.376],"tw":[9.284,3.52],"c0":[13.154,1.312],"c1":[14.816,1.136],"c2":[16.302,1.008],"c3":[17.66,1.168],"c4":[19.178,1.376],"c5":[20.904,1.744],"sh":[22.998,16.288],"fx":[39.636,1.552]},"6":{"p0":[0.0,1.984],"p1":[2.334,1.312],"p2":[3.996,1.808],"p3":[6.154,1.904],"p4":[8.408,1.968],"p5":[10.726,2.816],"tw":[13.892,3.28],"c0":[17.522,2.384],"c1":[20.256,1.376],"c2":[21.982,1.552],"c3":[23.884,1.488],"c4":[25.722,2.048],"c5":[28.12,1.488],"sh":[29.958,14.16],"fx":[44.468,1.632]},"7":{"p0":[0.0,2.208],"p1":[2.558,2.064],"p2":[4.972,1.44],"p3":[6.762,1.136],"p4":[8.248,1.312],"p5":[9.91,1.184],"tw":[11.444,4.928],"c0":[16.722,0.928],"c1":[18.0,1.28],"c2":[19.63,1.312],"c3":[21.292,1.312],"c4":[22.954,1.44],"c5":[24.744,1.168],"sh":[26.262,15.696],"fx":[42.308,2.08]},"8":{"p0":[0.0,1.952],"p1":[2.302,0.896],"p2":[3.548,0.784],"p3":[4.682,0.96],"p4":[5.992,0.736],"p5":[7.078,0.752],"tw":[8.18,3.088],"c0":[11.618,0.928],"c1":[12.896,1.536],"c2":[14.782,1.536],"c3":[16.668,1.008],"c4":[18.026,0.96],"c5":[19.336,2.528],"sh":[22.214,11.84],"fx":[34.404,0.832]},"9":{"p0":[0.0,1.552],"p1":[1.902,1.136],"p2":[3.388,1.152],"p3":[4.89,1.744],"p4":[6.984,1.136],"p5":[8.47,1.872],"tw":[10.692,3.312],"c0":[14.354,1.024],"c1":[15.728,1.008],"c2":[17.086,1.52],"c3":[18.956,1.184],"c4":[20.49,1.136],"c5":[21.976,1.552],"sh":[23.878,12.768],"fx":[36.996,1.248]},"10":{"p0":[0.0,2.08],"p1":[2.43,2.384],"p2":[5.164,1.984],"p3":[7.498,1.968],"p4":[9.816,3.184],"p5":[13.35,3.136],"tw":[16.836,4.816],"c0":[22.002,1.408],"c1":[23.76,0.928],"c2":[25.038,1.584],"c3":[26.972,2.384],"c4":[29.706,1.088],"c5":[31.144,1.36],"sh":[32.854,13.008],"fx":[46.212,3.776]},"11":{"p0":[0.0,1.12],"p1":[1.47,0.784],"p2":[2.604,1.792],"p3":[4.746,2.688],"p4":[7.784,2.528],"p5":[10.662,2.736],"tw":[13.748,5.904],"c0":[20.002,1.2],"c1":[21.552,2.352],"c2":[24.254,1.024],"c3":[25.628,1.296],"c4":[27.274,1.344],"c5":[28.968,1.792],"sh":[31.11,18.56],"fx":[50.02,1.088]},"12":{"p0":[0.0,0.816],"p1":[1.166,0.88],"p2":[2.396,0.768],"p3":[3.514,0.736],"p4":[4.6,0.896],"p5":[5.846,1.088],"tw":[7.284,2.816],"c0":[10.45,1.088],"c1":[11.888,1.184],"c2":[13.422,0.976],"c3":[14.748,0.784],"c4":[15.882,2.08],"c5":[18.312,1.744],"sh":[20.406,15.248],"fx":[36.004,1.328]},"13":{"p0":[0.0,3.152],"p1":[3.502,3.424],"p2":[7.276,3.28],"p3":[10.906,3.28],"p4":[14.536,4.032],"p5":[18.918,2.768],"tw":[22.036,3.856],"c0":[26.242,1.664],"c1":[28.256,1.664],"c2":[30.27,2.144],"c3":[32.764,2.24],"c4":[35.354,1.44],"c5":[37.144,1.552],"sh":[39.046,14.816],"fx":[54.212,1.456]},"14":{"p0":[0.0,1.584],"p1":[1.934,1.76],"p2":[4.044,1.792],"p3":[6.186,1.648],"p4":[8.184,1.84],"p5":[10.374,1.808],"tw":[12.532,4.432],"c0":[17.314,1.728],"c1":[19.392,0.8],"c2":[20.542,1.344],"c3":[22.236,1.44],"c4":[24.026,1.2],"c5":[25.576,1.28],"sh":[27.206,15.264],"fx":[42.82,2.272]},"15":{"p0":[0.0,1.936],"p1":[2.286,2.016],"p2":[4.652,1.856],"p3":[6.858,2.16],"p4":[9.368,1.808],"p5":[11.526,2.224],"tw":[14.1,3.632],"c0":[18.082,1.104],"c1":[19.536,1.264],"c2":[21.15,1.056],"c3":[22.556,1.12],"c4":[24.026,1.584],"c5":[25.96,0.784],"sh":[27.094,14.912],"fx":[42.356,1.36]},"16":{"p0":[0.0,2.192],"p1":[2.542,0.832],"p2":[3.724,0.944],"p3":[5.018,1.504],"p4":[6.872,1.248],"p5":[8.47,1.136],"tw":[9.956,3.44],"c0":[13.746,1.648],"c1":[15.744,1.248],"c2":[17.342,1.28],"c3":[18.972,1.392],"c4":[20.714,2.32],"c5":[23.384,1.376],"sh":[25.11,14.912],"fx":[40.372,2.72]},"17":{"p0":[0.0,0.8],"p1":[1.15,1.376],"p2":[2.876,0.832],"p3":[4.058,0.912],"p4":[5.32,0.88],"p5":[6.55,0.784],"tw":[7.684,3.728],"c0":[11.762,1.168],"c1":[13.28,1.136],"c2":[14.766,1.28],"c3":[16.396,0.912],"c4":[17.658,1.648],"c5":[19.656,1.024],"sh":[21.03,19.088],"fx":[40.468,1.968]},"18":{"p0":[0.0,4.688],"p1":[5.038,2.08],"p2":[7.468,4.096],"p3":[11.914,1.216],"p4":[13.48,1.856],"p5":[15.686,1.84],"tw":[17.876,4.032],"c0":[22.258,1.92],"c1":[24.528,1.296],"c2":[26.174,1.216],"c3":[27.74,1.28],"c4":[29.37,1.024],"c5":[30.744,1.968],"sh":[33.062,13.184],"fx":[46.596,2.464]},"19":{"p0":[0.0,1.824],"p1":[2.174,2.688],"p2":[5.212,2.208],"p3":[7.77,2.032],"p4":[10.152,2.368],"p5":[12.87,2.128],"tw":[15.348,3.2],"c0":[18.898,1.024],"c1":[20.272,2.256],"c2":[22.878,2.048],"c3":[25.276,1.2],"c4":[26.826,1.6],"c5":[28.776,2.416],"sh":[31.542,15.008],"fx":[46.9,2.72]},"20":{"p0":[0.0,1.664],"p1":[2.014,2.432],"p2":[4.796,1.296],"p3":[6.442,1.216],"p4":[8.008,1.408],"p5":[9.766,1.472],"tw":[11.588,4.208],"c0":[16.146,0.976],"c1":[17.472,1.088],"c2":[18.91,1.344],"c3":[20.604,1.136],"c4":[22.09,1.344],"c5":[23.784,1.072],"sh":[25.206,14.48],"fx":[40.036,1.648]}}};
+
+  const synth = window.speechSynthesis || null;
+  let accent = "us";
+  let rate = 0.9, speakQueue = null, audioReady = false, audioFailed = false;
+
+  const rateSel  = document.getElementById("rateSel");
+  const rateVal  = document.getElementById("rateVal");
+  const accentSeg = document.getElementById("accentSeg");
+  const accentNote = document.getElementById("accentNote");
+  const speechStat = document.getElementById("speechStat");
+
+  try{
+    const a = localStorage.getItem("tdol.accent");
+    if(a === "gb" || a === "en-GB") accent = "gb";
+    else if(a === "us" || a === "en-US") accent = "us";
+  }catch(e){}
+
+  const player = new Audio();
+  player.preload = "auto";
+
+  function setPitchPreserve(){
+    try{ player.preservesPitch = true; }catch(e){}
+    try{ player.mozPreservesPitch = true; }catch(e){}
+    try{ player.webkitPreservesPitch = true; }catch(e){}
+  }
+
+  function audioSrcFor(day, acc){
+    return "audio/" + acc + "/day" + String(day).padStart(2,"0") + ".mp3";
+  }
+
+  function loadDayAudio(){
+    audioReady = false;
+    const want = audioSrcFor(state.current, accent);
+    speechStat.textContent = "loading audio…";
+    player.src = want;
+    setPitchPreserve();
+    try{ player.load(); }catch(e){}
+  }
+
+  player.addEventListener("loadedmetadata", ()=>{
+    audioReady = true; audioFailed = false;
+    accentNote.hidden = true;
+    speechStat.textContent = (accent === "gb" ? "UK voice" : "US voice") + " ready";
+  });
+  player.addEventListener("error", ()=>{
+    audioReady = false; audioFailed = true;
+    speechStat.textContent = synth ? "using device voice" : "audio unavailable";
+    if(!synth){
+      accentNote.hidden = false;
+      accentNote.textContent = "The audio for this day could not load. Check your connection and reopen the page.";
+    }
+  });
+
+  /* ---- clip text, for the fallback path and for accessibility ---- */
+  function clipText(d, id){
+    if(id === "tw") return d.twister;
+    if(id === "sh") return d.shadow;
+    if(id === "fx") return d.fixYes;
+    const m = /^([pc])(\d+)$/.exec(id);
+    if(!m) return "";
+    if(m[1] === "c") return d.chunks[+m[2]] || "";
+    const p = d.pairs[+m[2]];
+    if(!p) return "";
+    const clean = s => String(s).replace(/[·↘↗\[\]]/g," ").replace(/\s+/g," ").trim();
+    const a = clean(p[0]), b = clean(p[1]);
+    return a.toLowerCase() === b.toLowerCase() ? a : (a + ". " + b + ".");
+  }
+
+  let segTimer = null;
+
+  function stopSpeaking(){
+    speakQueue = null;
+    clearTimeout(segTimer); segTimer = null;
+    try{ player.pause(); }catch(e){}
+    if(synth){ try{ synth.cancel(); }catch(e){} }
+    document.querySelectorAll(".play.speaking").forEach(b=>b.classList.remove("speaking"));
+    document.querySelectorAll(".line.speaking").forEach(b=>b.classList.remove("speaking"));
+    const cs = document.getElementById("chunkState"); if(cs) cs.textContent = "";
+    const ss = document.getElementById("shadowState"); if(ss) ss.textContent = "";
+  }
+
+  /* Fallback: only used if the bundled audio genuinely will not load. */
+  function speakFallback(text, opts){
+    opts = opts || {};
+    if(!synth){ if(opts.onEnd) opts.onEnd(); return; }
+    try{ synth.cancel(); }catch(e){}
+    const u = new SpeechSynthesisUtterance(
+      String(text).replace(/[…·↘↗\[\]]/g," ").replace(/—/g," , ").replace(/\s+/g," ").trim());
+    u.lang = accent === "gb" ? "en-GB" : "en-US";
+    u.rate = opts.rate || rate;
+    if(opts.onStart) u.onstart = opts.onStart;
+    u.onend = u.onerror = () => { if(opts.onEnd) opts.onEnd(); };
+    try{ synth.speak(u); }catch(e){ if(opts.onEnd) opts.onEnd(); }
+  }
+
+  /* Play one clip out of the current day's audio file. */
+  function say(clipId, opts){
+    opts = opts || {};
+    const d = DAYS[state.current - 1];
+    const seg = (CLIPS[accent] && CLIPS[accent][String(d.n)] && CLIPS[accent][String(d.n)][clipId]) || null;
+
+    clearTimeout(segTimer); segTimer = null;
+    try{ player.pause(); }catch(e){}
+    if(synth){ try{ synth.cancel(); }catch(e){} }
+
+    if(!seg || audioFailed){
+      speakFallback(clipText(d, clipId), opts);
+      return;
+    }
+
+    const r = opts.rate || rate;
+    const go = () => {
+      try{
+        setPitchPreserve();
+        player.playbackRate = r;
+        player.currentTime = seg[0];
+      }catch(e){}
+      const p = player.play();
+      if(p && p.catch) p.catch(()=>{
+        audioFailed = true;
+        speakFallback(clipText(d, clipId), opts);
+      });
+      if(opts.onStart) opts.onStart();
+      segTimer = setTimeout(()=>{
+        try{ player.pause(); }catch(e){}
+        segTimer = null;
+        if(opts.onEnd) opts.onEnd();
+      }, (seg[1] * 1000) / r + 90);
+    };
+
+    if(player.readyState >= 1) go();
+    else {
+      let fired = false;
+      const once = () => { if(fired) return; fired = true; go(); };
+      player.addEventListener("loadedmetadata", once, {once:true});
+      setTimeout(()=>{ if(!fired && player.readyState >= 1) once();
+                       else if(!fired){ fired = true; speakFallback(clipText(d, clipId), opts); } }, 2500);
+    }
+  }
+
+  function sayButton(btn, clipId, opts){
+    opts = opts || {};
+    if(btn && btn.classList.contains("speaking")){ stopSpeaking(); return; }
+    stopSpeaking();
+    if(btn) btn.classList.add("speaking");
+    const row = btn && btn.closest(".line");
+    if(row) row.classList.add("speaking");
+    say(clipId, Object.assign({}, opts, {
+      onEnd(){
+        if(btn) btn.classList.remove("speaking");
+        if(row) row.classList.remove("speaking");
+        if(opts.onEnd) opts.onEnd();
+      }
+    }));
+  }
+
+  function paintAccent(){
+    accentSeg.querySelectorAll("button").forEach(b=>{
+      b.setAttribute("aria-pressed", b.dataset.accent === accent ? "true" : "false");
+    });
+  }
+
+  accentSeg.addEventListener("click", e=>{
+    const b = e.target.closest("button[data-accent]");
+    if(!b || b.dataset.accent === accent) return;
+    stopSpeaking();
+    accent = b.dataset.accent;
+    try{ localStorage.setItem("tdol.accent", accent); }catch(e){}
+    paintAccent();
+    loadDayAudio();
+    player.addEventListener("loadedmetadata", ()=> say("c0"), {once:true});
+  });
+  paintAccent();
+  rateSel.addEventListener("input", ()=>{
+    rate = +rateSel.value;
+    rateVal.textContent = rate.toFixed(2) + "×";
+  });
+  rateVal.textContent = rate.toFixed(2) + "×";
+
+  document.getElementById("testVoice").addEventListener("click", ()=>{
+    stopSpeaking();
+    accentNote.hidden = true;
+    speechStat.textContent = "testing…";
+    let heard = false;
+    say("tw", {
+      onStart(){ heard = true; speechStat.textContent = "playing"; },
+      onEnd(){ if(heard) speechStat.textContent = (accent === "gb" ? "UK voice" : "US voice") + " ready"; }
+    });
+    setTimeout(()=>{
+      if(!heard){
+        speechStat.textContent = "no sound";
+        accentNote.hidden = false;
+        accentNote.textContent = "No sound yet. Check the volume and that the device isn't on silent — on iPhone the side switch mutes web audio. Tap Test voice once more; browsers need one tap before any audio may play.";
+      }
+    }, 3000);
+  });
+  document.getElementById("stopAll").addEventListener("click", stopSpeaking);
+
+  /* ============================ RENDER DAY ============================ */
+  const $ = id => document.getElementById(id);
+
+  function playIcon(){
+    return '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>';
+  }
+
+  function renderRail(){
+    const rail = $("rail");
+    rail.innerHTML = "";
+    DAYS.forEach(d=>{
+      const b = document.createElement("button");
+      b.className = "chip" + (dayState(d.n).complete ? " done" : "");
+      b.textContent = String(d.n).padStart(2,"0");
+      b.setAttribute("aria-current", d.n === state.current ? "true" : "false");
+      b.title = "Day " + d.n + " — " + d.title;
+      b.addEventListener("click", ()=>{ state.current = d.n; save(); render(); window.scrollTo({top:0,behavior:"smooth"}); });
+      rail.appendChild(b);
+    });
+    const active = rail.querySelector('[aria-current="true"]');
+    if(active) active.scrollIntoView({block:"nearest", inline:"center"});
+  }
+
+  function renderProgress(){
+    const done = DAYS.filter(d=>dayState(d.n).complete).length;
+    $("progFill").style.width = (done/20*100) + "%";
+    $("progText").textContent = done + " / 20 days";
+  }
+
+  function render(){
+    const d = DAYS[state.current - 1];
+    const ds = dayState(d.n);
+
+    $("dayNum").textContent = "DAY " + String(d.n).padStart(2,"0") + " · " + WEEKS[d.n];
+    $("dayTitle").textContent = d.title;
+    $("dayFocus").textContent = d.focus;
+    $("dayDone").innerHTML = ds.complete ? "<b style='color:var(--good)'>Completed</b>" : "Not finished";
+
+    // 01 warm-up
+    $("soundHint").textContent = d.soundHint;
+    $("soundTip").innerHTML = d.tip;
+    const pairs = $("pairs");
+    pairs.innerHTML = "";
+    d.pairs.forEach((p, idx)=>{
+      const el = document.createElement("div");
+      el.className = "pair";
+      el.innerHTML = '<span class="a"></span><span class="sep">/</span><span class="b"></span>' +
+                     '<button class="play" aria-label="Play">' + playIcon() + '</button>';
+      el.querySelector(".a").textContent = p[0];
+      el.querySelector(".b").textContent = p[1];
+      el.querySelector(".play").addEventListener("click", e=> sayButton(e.currentTarget, "p" + idx));
+      pairs.appendChild(el);
+    });
+    $("twisterText").textContent = d.twister;
+
+    // 02 chunks
+    const cw = $("chunks");
+    cw.innerHTML = "";
+    d.chunks.forEach((c, idx)=>{
+      const row = document.createElement("div");
+      row.className = "line";
+      row.innerHTML = '<button class="play" aria-label="Play line">' + playIcon() + '</button><p></p>';
+      row.querySelector("p").textContent = c;
+      row.querySelector(".play").addEventListener("click", e=> sayButton(e.currentTarget, "c" + idx));
+      cw.appendChild(row);
+    });
+
+    // 03 shadowing
+    $("shadowText").textContent = d.shadow;
+
+    // 04 drill
+    $("drillPrompt").textContent = d.prompt;
+    $("drillNote").textContent = d.note;
+
+    // 05 fix
+    $("fixWrong").textContent = d.fixNo;
+    $("fixRight").textContent = d.fixYes;
+    $("fixWhy").innerHTML = d.fixWhy;
+
+    // 06 mission
+    $("missionText").textContent = d.mission;
+    $("missionChk").checked = !!ds.mission;
+    $("missionBox").classList.toggle("done", !!ds.mission);
+
+    $("finishBtn").textContent = ds.complete ? "Completed ✓" : "Mark day complete";
+    $("prevBtn").disabled = state.current === 1;
+    $("nextBtn").disabled = state.current === 20;
+
+    resetMic();
+    resetDrill();
+    stopSpeaking();
+    loadDayAudio();
+    renderRail();
+    renderProgress();
+  }
+
+  // static play buttons
+  document.querySelectorAll("[data-clip]").forEach(btn=>{
+    btn.addEventListener("click", e=> sayButton(e.currentTarget, btn.getAttribute("data-clip")));
+  });
+
+  /* ---- chunk playlist ---- */
+  $("playChunks").addEventListener("click", ()=>{
+    const d = DAYS[state.current - 1];
+    if(speakQueue){ stopSpeaking(); return; }
+    let i = 0;
+    speakQueue = true;
+    const rows = $("chunks").querySelectorAll(".line");
+    const step = () => {
+      if(!speakQueue || i >= d.chunks.length){
+        stopSpeaking(); return;
+      }
+      rows.forEach(r=>r.classList.remove("speaking"));
+      rows[i].classList.add("speaking");
+      $("chunkState").textContent = "Line " + (i+1) + " of " + d.chunks.length + " — repeat it out loud in the gap";
+      say("c" + i, { onEnd(){ i++; setTimeout(step, 2200); } });
+    };
+    step();
+  });
+
+  /* ---- shadowing ---- */
+  function shadowPlay(r, times){
+    const d = DAYS[state.current - 1];
+    stopSpeaking();
+    speakQueue = true;
+    let left = times;
+    const go = () => {
+      if(!speakQueue || left <= 0){ stopSpeaking(); return; }
+      $("shadowState").textContent = times > 1 ? ("Pass " + (times - left + 1) + " of " + times) : "Speak along, half a beat behind";
+      left--;
+      say("sh", { rate:r, onEnd(){ setTimeout(go, 1400); } });
+    };
+    go();
+  }
+  $("shadowSlow").addEventListener("click", ()=>shadowPlay(0.7, 1));
+  $("shadowNormal").addEventListener("click", ()=>shadowPlay(1.0, 1));
+  $("shadowLoop").addEventListener("click", ()=>{
+    if(speakQueue){ stopSpeaking(); return; }
+    shadowPlay(0.8, 3);
+  });
+
+  /* ==================== DRILL: TIMER, TAP COUNTER, SELF-CHECK ====================
+     Station 04 has to work on a device that will not give this page a microphone,
+     so the primary tools here need no permissions at all: a timer, a manual filler
+     counter, and an honest self-check. The microphone is an optional extra. */
+
+  // How long today's answer should run, in seconds.
+  const TARGET = {1:45, 2:60, 3:90, 4:60, 5:90, 6:90, 7:120, 8:120, 9:60, 10:120,
+                  11:90, 12:90, 13:90, 14:180, 15:90, 16:120, 17:90, 18:180, 19:300, 20:600};
+
+  const CHECKS = [
+    "I started speaking within two seconds — no run-up, no throat-clearing.",
+    "I never restarted a sentence. Mistakes got repaired mid-flow and I carried on.",
+    "My statements ended downward, not on a rising question tone.",
+    "When I got stuck I paused in silence instead of filling it.",
+    "I kept today's sound in mind while I spoke."
+  ];
+
+  let tSecs = 0, tRunning = false, tInt = null, taps = 0;
+
+  function drillState(){
+    const ds = dayState(state.current);
+    if(!ds.drill) ds.drill = { taps:0, secs:0, checks:[false,false,false,false,false] };
+    if(!Array.isArray(ds.drill.checks)) ds.drill.checks = [false,false,false,false,false];
+    return ds.drill;
+  }
+
+  function beep(){
+    try{
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      const c = new Ctx(); const o = c.createOscillator(); const g = c.createGain();
+      o.type = "sine"; o.frequency.value = 660;
+      g.gain.setValueAtTime(0.0001, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.18, c.currentTime + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.55);
+      o.connect(g); g.connect(c.destination); o.start();
+      o.stop(c.currentTime + 0.6);
+      setTimeout(()=>{ try{ c.close(); }catch(e){} }, 900);
+    }catch(e){}
+  }
+
+  function paintClock(){
+    const target = TARGET[state.current] || 90;
+    $("bigClock").textContent = fmt(tSecs);
+    $("bigClock").classList.toggle("over", tSecs >= target);
+    const pct = Math.min(100, (tSecs / target) * 100);
+    $("clockFill").style.width = pct + "%";
+    $("clockFill").classList.toggle("over", tSecs >= target);
+    $("clockMsg").textContent = "target " + fmt(target);
+    $("clockState").textContent = tSecs >= target
+      ? "target reached — keep going if you can"
+      : (tRunning ? fmt(target - tSecs) + " to go" : "");
+    $("tapCount").textContent = taps;
+    $("tapRate").textContent = tSecs > 20
+      ? (taps / (tSecs/60)).toFixed(1) + " per minute"
+      : (taps ? taps + " so far" : "—");
+  }
+
+  function timerTick(){
+    tSecs++;
+    const target = TARGET[state.current] || 90;
+    if(tSecs === target) beep();
+    paintClock();
+    const d = drillState();
+    d.secs = Math.max(d.secs || 0, tSecs);
+    if(tSecs % 5 === 0) save();
+  }
+
+  $("timerBtn").addEventListener("click", ()=>{
+    if(tRunning){
+      clearInterval(tInt); tRunning = false;
+      $("timerBtn").textContent = "Resume";
+      $("timerBtn").classList.add("primary"); $("timerBtn").classList.remove("rec");
+      drillState().secs = Math.max(drillState().secs || 0, tSecs);
+      save();
+    } else {
+      stopSpeaking();
+      tRunning = true;
+      $("timerBtn").textContent = "■ Stop";
+      $("timerBtn").classList.remove("primary"); $("timerBtn").classList.add("rec");
+      tInt = setInterval(timerTick, 1000);
+    }
+    paintClock();
+  });
+
+  $("timerReset").addEventListener("click", ()=>{
+    clearInterval(tInt); tRunning = false; tSecs = 0; taps = 0;
+    $("timerBtn").textContent = "Start";
+    $("timerBtn").classList.add("primary"); $("timerBtn").classList.remove("rec");
+    const d = drillState(); d.secs = 0; d.taps = 0; save();
+    paintClock();
+  });
+
+  $("tapBtn").addEventListener("click", ()=>{
+    taps++;
+    drillState().taps = taps;
+    paintClock();
+    save();
+  });
+
+  function renderChecks(){
+    const d = drillState();
+    const host = $("checkList");
+    host.innerHTML = "";
+    const day = DAYS[state.current - 1];
+    CHECKS.forEach((text, i)=>{
+      const lab = document.createElement("label");
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.id = "chk-" + i;
+      cb.checked = !!d.checks[i];
+      const sp = document.createElement("span");
+      sp.textContent = i === 4 ? ("I kept today's focus in mind: " + day.soundHint) : text;
+      lab.classList.toggle("on", cb.checked);
+      cb.addEventListener("change", ()=>{
+        d.checks[i] = cb.checked;
+        lab.classList.toggle("on", cb.checked);
+        save();
+      });
+      lab.appendChild(cb); lab.appendChild(sp);
+      host.appendChild(lab);
+    });
+  }
+
+  function resetDrill(){
+    clearInterval(tInt); tRunning = false;
+    const d = drillState();
+    tSecs = d.secs || 0;
+    taps  = d.taps || 0;
+    $("timerBtn").textContent = tSecs ? "Resume" : "Start";
+    $("timerBtn").classList.add("primary"); $("timerBtn").classList.remove("rec");
+    $("tapBest").textContent = "";
+    paintClock();
+    renderChecks();
+    $("ownClip").innerHTML = "";
+  }
+
+  $("ownFile").addEventListener("change", e=>{
+    const f = e.target.files && e.target.files[0];
+    if(!f) return;
+    const host = $("ownClip");
+    host.innerHTML = "";
+    const row = document.createElement("div");
+    row.className = "clip";
+    const label = document.createElement("span");
+    label.className = "name";
+    label.textContent = f.name.slice(0,22);
+    const au = document.createElement("audio");
+    au.controls = true;
+    au.src = URL.createObjectURL(f);
+    row.appendChild(label); row.appendChild(au);
+    host.appendChild(row);
+  });
+
+  /* ==================== MICROPHONE CAPTURE ==================== */
+  /* One capture path: real audio via getUserMedia, a live level meter so you can
+     SEE that you are being heard, a recording you can play back, and — where the
+     browser offers it — a live transcript on top. Everything degrades one layer
+     at a time instead of failing silently. */
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const FILLERS = /\b(uh|uhh|um|umm|erm|er|ah|like|basically|actually|literally|you know|i mean|sort of|kind of)\b/gi;
+
+  const micBtn   = $("micBtn");
+  const micCheck = $("micCheck");
+  const micNote  = $("micNote");
+  const meter    = $("meter");
+  const meterFill= $("meterFill");
+  const meterMsg = $("meterMsg");
+  const meterPeak= $("meterPeak");
+  const transcript = $("transcript");
+
+  const cap = {
+    stream:null, ctx:null, analyser:null, buf:null, raf:null,
+    mediaRec:null, chunks:[], rec:null, active:false, wantTranscript:false,
+    t0:0, talkMs:0, pauses:0, lastFrame:0, loud:false, quietSince:0, peak:0,
+    finalText:"", tick:null, target:null
+  };
+
+  function fmt(s){ return Math.floor(s/60) + ":" + String(Math.floor(s%60)).padStart(2,"0"); }
+
+  function inFrame(){ try{ return window.self !== window.top; }catch(e){ return true; } }
+
+  function policyBlocked(){
+    try{
+      const fp = document.featurePolicy || document.permissionsPolicy;
+      if(fp && typeof fp.allowsFeature === "function") return !fp.allowsFeature("microphone");
+    }catch(e){}
+    return null; // unknown
+  }
+
+  function showMicNote(msg){
+    micNote.hidden = false;
+    micNote.innerHTML = msg;
+  }
+
+  function micErrorMessage(err){
+    const name = (err && (err.name || err.error)) || "unknown";
+    const blocked = policyBlocked();
+    const framed = inFrame();
+
+    if(name === "NotAllowedError" || name === "SecurityError" || name === "not-allowed" || name === "service-not-allowed"){
+      if(blocked === true || framed){
+        return "<b>This viewer won’t let the page use the microphone, and it can’t be switched on from inside</b> — " +
+               "that’s a fixed browser rule for embedded pages. To practise anyway, use <b>“No microphone here?”</b> just above: " +
+               "record on your phone’s voice recorder and load the file to play it back. The live transcript needs a computer, in Chrome.";
+      }
+      return "<b>Microphone permission was refused.</b> Click the padlock or camera icon in the browser's address bar, " +
+             "set Microphone to <b>Allow</b>, reload, and press Start again.";
+    }
+    if(name === "NotFoundError" || name === "DevicesNotFoundError"){
+      return "<b>No microphone was found.</b> Plug one in or check your system sound input, then press Start again.";
+    }
+    if(name === "NotReadableError" || name === "TrackStartError"){
+      return "<b>Another app is holding the microphone.</b> Close Zoom, Meet, or any recorder, then press Start again.";
+    }
+    if(name === "audio-capture"){
+      return "<b>The browser couldn't open the microphone.</b> Check no other app is using it, then try again.";
+    }
+    return "<b>The microphone couldn't start</b> (" + name + "). " +
+           (framed ? "Opening this page in its own browser tab usually fixes it." : "Try reloading the page.");
+  }
+
+  async function micCheckRun(){
+    micNote.hidden = true;
+    meterMsg.textContent = "checking…";
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      meterMsg.textContent = "unavailable";
+      showMicNote("<b>This browser exposes no microphone API at all.</b> Open the page in Chrome, Edge or Safari in its own tab.");
+      return false;
+    }
+    if(policyBlocked() === true){
+      meterMsg.textContent = "blocked by viewer";
+      showMicNote(micErrorMessage({name:"NotAllowedError"}));
+      return false;
+    }
+    try{
+      const s = await navigator.mediaDevices.getUserMedia({audio:true});
+      const label = (s.getAudioTracks()[0] && s.getAudioTracks()[0].label) || "microphone";
+      s.getTracks().forEach(t=>t.stop());
+      meterMsg.textContent = "ready · " + label.slice(0,40);
+      showMicNote("<b>Microphone works.</b> Press <b>Start speaking</b> and watch the bar move as you talk." +
+                  (SR ? "" : " Live transcription isn't available in this browser, so the word and filler counts will stay blank — the recording, the timer and the talking/pause meters all still work."));
+      return true;
+    }catch(err){
+      meterMsg.textContent = "blocked";
+      showMicNote(micErrorMessage(err));
+      return false;
+    }
+  }
+  micCheck.addEventListener("click", micCheckRun);
+
+  // Label the optional microphone section honestly up front.
+  (function(){
+    const det = document.getElementById("micAdvanced");
+    if(!det) return;
+    const sum = det.querySelector("summary");
+    const blocked = policyBlocked();
+    const noApi = !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia;
+    if(blocked === true || noApi){
+      sum.innerHTML = "Microphone can\u2019t run inside this viewer \u2014 use the recorder just above, or open on a computer";
+    } else if(!SR){
+      sum.innerHTML = "Use this device\u2019s microphone (recording &amp; meters; no live transcript in this browser)";
+    }
+  })();
+
+  function updateStats(){
+    if(!cap.active && !cap.t0) return;
+    const secs = (Date.now() - cap.t0)/1000;
+    $("statTime").textContent = fmt(secs);
+    $("statTalk").textContent = fmt(cap.talkMs/1000);
+    $("statPause").textContent = cap.pauses;
+    const words = cap.finalText.trim() ? cap.finalText.trim().split(/\s+/).length : 0;
+    $("statWords").textContent = SR ? words : "—";
+    $("statWpm").textContent = (SR && secs > 12 && words) ? Math.round(words/(secs/60)) : "—";
+    const f = (cap.finalText.match(FILLERS) || []).length;
+    $("statFiller").textContent = SR ? f : "—";
+    $("fillerStat").classList.toggle("alert", f > 4);
+  }
+
+  function paintTranscript(interim){
+    const esc = s => String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+    transcript.innerHTML = esc(cap.finalText).replace(FILLERS, m => "<mark>" + m + "</mark>") +
+      (interim ? '<span class="interim"> ' + esc(interim) + '</span>' : "");
+  }
+
+  function meterLoop(){
+    if(!cap.active) return;
+    cap.analyser.getByteTimeDomainData(cap.buf);
+    let sum = 0;
+    for(let i=0;i<cap.buf.length;i++){ const v = (cap.buf[i]-128)/128; sum += v*v; }
+    const rms = Math.sqrt(sum/cap.buf.length);
+    const level = Math.min(1, rms*7);
+    meterFill.style.width = (level*100).toFixed(1) + "%";
+    if(rms > cap.peak) cap.peak = rms;
+
+    const now = Date.now();
+    const dt = cap.lastFrame ? now - cap.lastFrame : 0;
+    cap.lastFrame = now;
+    const speaking = rms > 0.012;
+    if(speaking){
+      cap.talkMs += dt;
+      if(!cap.loud && cap.quietSince && now - cap.quietSince > 900) cap.pauses++;
+      cap.loud = true; cap.quietSince = 0;
+      meterMsg.textContent = "hearing you";
+    } else {
+      if(cap.loud){ cap.quietSince = now; cap.loud = false; }
+      meterMsg.textContent = "listening — speak up";
+    }
+    meterPeak.textContent = "peak " + Math.round(Math.min(100, cap.peak*700)) + "%";
+    cap.raf = requestAnimationFrame(meterLoop);
+  }
+
+  async function startCapture(){
+    micNote.hidden = true;
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      showMicNote("<b>This browser exposes no microphone API.</b> Open the page in its own tab in Chrome, Edge or Safari.");
+      return;
+    }
+    stopSpeaking(); // don't record the coach's voice
+    let stream;
+    try{
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio:{ echoCancellation:true, noiseSuppression:true, autoGainControl:true }
+      });
+    }catch(err){
+      showMicNote(micErrorMessage(err));
+      meterMsg.textContent = "blocked";
+      return;
+    }
+
+    cap.stream = stream;
+    cap.active = true;
+    cap.t0 = Date.now(); cap.talkMs = 0; cap.pauses = 0;
+    cap.lastFrame = 0; cap.loud = false; cap.quietSince = 0; cap.peak = 0;
+    cap.finalText = ""; cap.chunks = [];
+    transcript.innerHTML = "";
+    meter.classList.remove("idle");
+
+    // level meter
+    try{
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      cap.ctx = new Ctx();
+      if(cap.ctx.state === "suspended") cap.ctx.resume();
+      const src = cap.ctx.createMediaStreamSource(stream);
+      cap.analyser = cap.ctx.createAnalyser();
+      cap.analyser.fftSize = 1024;
+      cap.buf = new Uint8Array(cap.analyser.fftSize);
+      src.connect(cap.analyser);
+      meterLoop();
+    }catch(e){ meterMsg.textContent = "recording"; }
+
+    // recording, so the take can be played back
+    try{
+      cap.mediaRec = new MediaRecorder(stream);
+      cap.mediaRec.ondataavailable = e => { if(e.data && e.data.size) cap.chunks.push(e.data); };
+      cap.mediaRec.onstop = () => {
+        if(cap.chunks.length){
+          addClip(new Blob(cap.chunks, {type: cap.mediaRec.mimeType || "audio/webm"}));
+        }
+      };
+      cap.mediaRec.start();
+    }catch(e){ cap.mediaRec = null; }
+
+    // transcription, where the browser has it
+    if(SR){
+      try{
+        cap.rec = new SR();
+        cap.rec.continuous = true;
+        cap.rec.interimResults = true;
+        cap.rec.lang = accent === "gb" ? "en-GB" : "en-US";
+        cap.rec.onresult = e => {
+          let interim = "";
+          for(let i = e.resultIndex; i < e.results.length; i++){
+            const t = e.results[i][0].transcript;
+            if(e.results[i].isFinal) cap.finalText += t + " "; else interim += t;
+          }
+          paintTranscript(interim);
+          updateStats();
+        };
+        cap.rec.onerror = ev => {
+          const n = ev && ev.error;
+          if(n === "not-allowed" || n === "service-not-allowed"){
+            showMicNote(micErrorMessage({name:n}));
+          } else if(n === "network"){
+            showMicNote("<b>Transcription needs an internet connection</b> — the browser sends audio to its speech service. " +
+                        "Your recording and the meters below still work offline.");
+          }
+        };
+        cap.rec.onend = () => { if(cap.active){ try{ cap.rec.start(); }catch(e){} } };
+        cap.rec.start();
+      }catch(e){ cap.rec = null; }
+    } else {
+      showMicNote("Live transcription isn't available in this browser, so words, pace and fillers stay blank. " +
+                  "<b>Everything else works</b> — you're being recorded, timed, and the bar shows your voice. " +
+                  "For the word counts, open this page in Chrome or Edge on a computer.");
+    }
+
+    micBtn.textContent = "■ Stop";
+    micBtn.classList.remove("primary"); micBtn.classList.add("rec");
+    cap.tick = setInterval(updateStats, 400);
+  }
+
+  function stopCapture(){
+    cap.active = false;
+    cancelAnimationFrame(cap.raf);
+    clearInterval(cap.tick);
+    if(cap.rec){ try{ cap.rec.stop(); }catch(e){} cap.rec = null; }
+    if(cap.mediaRec && cap.mediaRec.state !== "inactive"){ try{ cap.mediaRec.stop(); }catch(e){} }
+    if(cap.ctx){ try{ cap.ctx.close(); }catch(e){} cap.ctx = null; }
+    if(cap.stream){ cap.stream.getTracks().forEach(t=>t.stop()); cap.stream = null; }
+    meterFill.style.width = "0%";
+    meter.classList.add("idle");
+    meterMsg.textContent = "microphone idle";
+    micBtn.textContent = "Start speaking";
+    micBtn.classList.add("primary"); micBtn.classList.remove("rec");
+    updateStats();
+  }
+
+  function resetMic(){
+    stopCapture();
+    cap.finalText = ""; cap.t0 = 0; cap.talkMs = 0; cap.pauses = 0; cap.peak = 0;
+    transcript.innerHTML = "";
+    micNote.hidden = true;
+    meterPeak.textContent = "";
+    ["statTime","statTalk"].forEach(id => $(id).textContent = "0:00");
+    $("statPause").textContent = "0";
+    $("statWords").textContent = SR ? "0" : "—";
+    $("statWpm").textContent = "—";
+    $("statFiller").textContent = SR ? "0" : "—";
+    $("fillerStat").classList.remove("alert");
+  }
+
+  micBtn.addEventListener("click", ()=> cap.active ? stopCapture() : startCapture());
+  $("micClear").addEventListener("click", resetMic);
+
+  /* ==================== RECORDER (long takes) ==================== */
+  const recBtn = $("recBtn"), clips = $("clips");
+  let longRec = null, longStream = null, longChunks = [], longTick = null, longStart = 0;
+
+  recBtn.addEventListener("click", async ()=>{
+    if(longRec && longRec.state === "recording"){ longRec.stop(); return; }
+    stopSpeaking();
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      $("recTime").textContent = "no microphone API"; return;
+    }
+    try{
+      longStream = await navigator.mediaDevices.getUserMedia({audio:true});
+    }catch(err){
+      $("recTime").textContent = "blocked";
+      showMicNote(micErrorMessage(err));
+      return;
+    }
+    longChunks = [];
+    try{ longRec = new MediaRecorder(longStream); }
+    catch(e){ $("recTime").textContent = "cannot record here"; return; }
+    longRec.ondataavailable = e => { if(e.data && e.data.size) longChunks.push(e.data); };
+    longRec.onstop = () => {
+      clearInterval(longTick);
+      if(longChunks.length) addClip(new Blob(longChunks, {type: longRec.mimeType || "audio/webm"}));
+      if(longStream) longStream.getTracks().forEach(t=>t.stop());
+      recBtn.textContent = "● Record";
+      $("recTime").textContent = "0:00";
+    };
+    longRec.start();
+    longStart = Date.now();
+    recBtn.textContent = "■ Stop";
+    longTick = setInterval(()=>{ $("recTime").textContent = fmt((Date.now()-longStart)/1000); }, 500);
+  });
+
+  function addClip(blob){
+    const row = document.createElement("div");
+    row.className = "clip";
+    const name = "day" + String(state.current).padStart(2,"0") + "-" +
+                 new Date().toTimeString().slice(0,5).replace(":","");
+    const label = document.createElement("span");
+    label.className = "name";
+    label.textContent = name;
+    const a = document.createElement("audio");
+    a.controls = true;
+    a.src = URL.createObjectURL(blob);
+    row.appendChild(label); row.appendChild(a);
+    if(downloads){
+      const b = document.createElement("button");
+      b.className = "btn ghost";
+      b.textContent = "Save file";
+      b.addEventListener("click", async ()=>{
+        b.disabled = true; b.textContent = "Saving…";
+        try{
+          await downloads.save({ filename: name + ".webm", data: blob });
+          b.textContent = "Saved";
+        }catch(e){ b.textContent = "Save file"; b.disabled = false; }
+      });
+      row.appendChild(b);
+    }
+    clips.prepend(row);
+  }
+
+  $("cmpFile").addEventListener("change", e=>{
+    const f = e.target.files && e.target.files[0];
+    if(!f) return;
+    const cc = $("cmpClip");
+    cc.innerHTML = "";
+    const row = document.createElement("div");
+    row.className = "clip";
+    const label = document.createElement("span");
+    label.className = "name";
+    label.textContent = f.name.slice(0,22);
+    const a = document.createElement("audio");
+    a.controls = true;
+    a.src = URL.createObjectURL(f);
+    row.appendChild(label); row.appendChild(a);
+    cc.appendChild(row);
+  });
+
+  /* ============================ NAV & COMPLETION ============================ */
+  $("missionChk").addEventListener("change", e=>{
+    dayState(state.current).mission = e.target.checked;
+    $("missionBox").classList.toggle("done", e.target.checked);
+    save();
+  });
+  $("finishBtn").addEventListener("click", ()=>{
+    const ds = dayState(state.current);
+    ds.complete = !ds.complete;
+    save();
+    render();
+  });
+  $("prevBtn").addEventListener("click", ()=>{
+    if(state.current > 1){ state.current--; save(); render(); window.scrollTo({top:0,behavior:"smooth"}); }
+  });
+  $("nextBtn").addEventListener("click", ()=>{
+    if(state.current < 20){ state.current++; save(); render(); window.scrollTo({top:0,behavior:"smooth"}); }
+  });
+
+  /* theme */
+  $("themeBtn").addEventListener("click", ()=>{
+    const cur = document.documentElement.getAttribute("data-theme");
+    const next = cur === "dark" ? "light" : cur === "light" ? "dark" :
+      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "dark");
+    document.documentElement.setAttribute("data-theme", next);
+    try{ localStorage.setItem("tdol.theme", next); }catch(e){}
+  });
+  try{
+    const t = localStorage.getItem("tdol.theme");
+    if(t) document.documentElement.setAttribute("data-theme", t);
+  }catch(e){}
+
+  /* ============================ BOOT ============================ */
+  loadLocal();
+  render();
+
+  if(window.claude && typeof window.claude.use === "function"){
+    window.claude.use("db").then(d=>{
+      if(!d) return;
+      db = d;
+      $("syncnote").textContent = "syncing";
+      return db.doc("progress/main").get().then(doc=>{
+        const v = doc && (doc.data || doc);
+        if(v && v.days){
+          const localCount = Object.values(state.days).filter(x=>x.complete).length;
+          const remoteCount = Object.values(v.days).filter(x=>x.complete).length;
+          if(remoteCount >= localCount){
+            state = Object.assign({current:state.current, days:{}}, v, {current: v.current || state.current});
+            saveLocal();
+            render();
+          } else {
+            save();
+          }
+        }
+        $("syncnote").textContent = "synced";
+      });
+    }).catch(()=>{ $("syncnote").textContent = "local"; });
+
+    window.claude.use("downloads").then(d=>{ if(d) downloads = d; }).catch(()=>{});
+  }
+})();
+</script>
+
+</body></html>
